@@ -5,7 +5,7 @@ import 'package:ui/ui/main2.dart';
   class Screen2 extends StatefulWidget{
   @override
   State<StatefulWidget> createState() {
-    Screen2State();
+    return Screen2State();
   }
   }
 
