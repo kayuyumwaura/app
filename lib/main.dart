@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ui/ui/dashboard.dart';
-import 'package:ui/ui/main2.dart';
+import 'package:ui/ui/screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -84,12 +84,4 @@ class UIAppState extends State<UIApp> {
       
     );
   }
-}
-
-class Screen2 extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    return Screen2State();
-  }
-
 }
