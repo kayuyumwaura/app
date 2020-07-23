@@ -190,7 +190,6 @@ class Screen1State extends State<Screen1> {
               ),
             ),
 
-            
             // recent reports
             Container(
               color: Colors.transparent,

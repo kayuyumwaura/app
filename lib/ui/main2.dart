@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ui/main.dart';
 import 'package:ui/ui/dashboard.dart';
+import 'package:ui/ui/screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -11,16 +12,16 @@ class MyApp extends StatelessWidget{
     return new MaterialApp(
       title:"Record expense",
       debugShowCheckedModeBanner: false,
-      home: Screen1(),
+      home: Screen2(),
     );
   }
 }
 
-class Screen2 extends StatefulWidget{
-State<StatefulWidget> createState()=>Screen2State();
+class ExpensePage extends StatefulWidget{
+State<StatefulWidget> createState()=>ExpensePageState();
 }
 
-class Screen2State extends State<Screen2>{
+class ExpensePageState extends State<ExpensePage>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
