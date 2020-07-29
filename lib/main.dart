@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ui/ui/dashboard.dart';
+import 'package:ui/ui/main2.dart';
 import 'package:ui/ui/screen.dart';
 
 void main() {
@@ -75,7 +76,7 @@ class UIAppState extends State<UIApp> {
             onPressed: () {
               Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => Screen2()),
+              MaterialPageRoute(builder: (context) => ExpensePage()),
               );
             },
           ),
