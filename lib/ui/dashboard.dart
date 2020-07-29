@@ -9,6 +9,8 @@ class Screen1State extends State<Screen1> {
   @override
   Widget build(BuildContext context) {
     return  SingleChildScrollView(
+      child: Container(
+        //color: Color.fromRGBO(230, 230, 230, 10.0),
         child: Column(
           mainAxisSize: MainAxisSize.max,
           children: [
@@ -336,7 +338,7 @@ class Screen1State extends State<Screen1> {
             ),
           ],
         ),
-      
+      )
     );
   }
 }

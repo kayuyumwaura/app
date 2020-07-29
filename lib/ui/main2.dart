@@ -23,10 +23,8 @@ class ExpensePageState extends State<ExpensePage>{
     TextStyle textstyle = Theme.of(context).textTheme.title;
     return Scaffold(
       appBar: AppBar(
-        actions: [IconButton(icon: Icon(Icons.arrow_back), onPressed: (){
-          Navigator.pop(context);
-        })],
-        title: Text("Record Expense")
+        backgroundColor: Color.fromRGBO(230, 230, 230, 10.0),
+        title: Text("Record Expense", style: TextStyle(color: Colors.black))
       ),
       body: Screen2(),
     );

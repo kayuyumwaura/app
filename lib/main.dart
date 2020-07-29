@@ -25,9 +25,9 @@ class UIAppState extends State<UIApp> {
     return Scaffold(
       //appbar
       appBar: AppBar(
-        backgroundColor: Colors.blueGrey[30],
-        title: Text('Dashboard'),
-        actions: [IconButton(icon: Icon(Icons.notifications_none), onPressed: (){})],
+        backgroundColor: Color.fromRGBO(230, 230, 230, 10.0),
+        title: Text('Dashboard', style: TextStyle(color: Colors.black)),
+        actions: [IconButton(icon: Icon(Icons.notifications_none, color: Colors.blueGrey[900],), onPressed: (){})],
       ),
  body: Screen1(),     
       drawer: Drawer(
