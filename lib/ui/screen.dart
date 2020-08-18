@@ -1,7 +1,10 @@
+import 'dart:async';
+import 'dart:convert' show json;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ui/main.dart';
 import 'package:ui/ui/main2.dart';
+import 'package:http/http.dart' as http;
 
 class Screen2 extends StatefulWidget {
   @override
@@ -14,8 +17,9 @@ class Screen2State extends State<Screen2> {
   final _currencies = ['KES', 'AED', 'YEN'];
   String _currency = 'KES';
   TextEditingController expenseController = TextEditingController();
-  TextEditingController categoryController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
   TextEditingController amountController = TextEditingController();
+  TextEditingController categoryController = TextEditingController();
   //clear icon in merchant
   var merchantController = TextEditingController();
   clearTextInput() {
@@ -36,16 +40,74 @@ class Screen2State extends State<Screen2> {
 
   //itemize switch button
   bool isSwitched = false;
-    //reimbursement switch button
+  //reimbursement switch button
   bool isSwitched1 = true;
-//dropdown
+//dropdown - Amount
   String _chosenValue = 'KES';
   final amounts = ['KES', 'EURO', 'YEN', 'Parisland', 'Quickmart'];
   List<String> merchant = ['KES', 'EURO', 'YEN', 'Parisland', 'Quickmart'];
+//categorieslist
+/*    String categoriesValue;
+  final categories = [ "category_1",
+    "category_2",
+    "category_3",
+    "category_4",
+    "category_5","category 6"];*/
+  //List<String> merchant = ['KES', 'EURO', 'YEN', 'Parisland', 'Quickmart'];
+
+ final List<String> _categories = [
+    "category_1",
+    "category_2",
+    "category_3",
+    "category_4",
+    "category_5","category 6"
+  ];
+  String selectedValue;
+  String _selectedCategory;
+  /*final myController = TextEditingController();
+  final items = List<String>();
+  String selectedValue;
+  String _selectedCategory;*/
+  /*_onChanged(String value){
+    setState(() {
+      dupitems = items.where(
+        (string) => string.toLowerCase().contains(value.toLowerCase())).toList();
+    });
+  }*/
+
+//new getdata function
+//get data from internet,. might take a whle so we use the async
+//use future so that we return something when the function is down
+  /*Future<String> getData() async {
+    http.Response response = await http.get(
+      "https://jsonplaceholder.typicode.com/posts",
+      //authenticate here if necessary
+      headers: {
+        "Accept": "application/json"
+      }
+    );
+   // print(response.body);
+   List data = json.decode(response.body);
+   print(data[1]["title"]);
+   //print(data);
+  }*/
 
   @override
   Widget build(BuildContext context) {
     TextStyle textstyle = Theme.of(context).textTheme.title;
+    appBar:
+    AppBar(
+      backgroundColor: Color.fromRGBO(230, 230, 230, 10.0),
+      title: Text("Record Expense", style: TextStyle(color: Colors.black)),
+      actions: [
+        IconButton(
+            icon: Icon(
+              Icons.save_alt,
+              color: Colors.blueGrey[900],
+            ),
+            onPressed: () {})
+      ],
+    );
     return SingleChildScrollView(
         child: Container(
             color: Color.fromRGBO(230, 230, 230, 10.0),
@@ -72,8 +134,7 @@ class Screen2State extends State<Screen2> {
                         style: TextStyle(
                             fontWeight: FontWeight.normal,
                             fontSize: 16.0,
-                            color: Colors.redAccent
-                            ),
+                            color: Colors.redAccent),
                       ),
                       //date input field
                       Text(_dateTime == null ? ' ' : _dateTime.toString()),
@@ -101,28 +162,28 @@ class Screen2State extends State<Screen2> {
                     ],
                   ),
 
-                  Stack( 
-                  //mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                   alignment: Alignment.topRight,
-                    children: <Widget>[
-                    Align(
-                        alignment: Alignment.centerRight,
-                        child: Icon(
-                          Icons.turned_in,
-                          color: Color.fromRGBO(230, 230, 230, 10.0),
-                          size: 100,
-                        )),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: Text(
-                        'Attach \nReceipt',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.blueGrey,
-                        ),
-                      ),
-                    )
-                  ])
+                  Stack(
+                      //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      alignment: Alignment.topRight,
+                      children: <Widget>[
+                        Align(
+                            alignment: Alignment.centerRight,
+                            child: Icon(
+                              Icons.turned_in,
+                              color: Color.fromRGBO(230, 230, 230, 10.0),
+                              size: 100,
+                            )),
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: Text(
+                            'Attach \nReceipt',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.blueGrey,
+                            ),
+                          ),
+                        )
+                      ])
                 ]),
               ),
 
@@ -133,7 +194,7 @@ class Screen2State extends State<Screen2> {
               //row 2
               Container(
                   padding: EdgeInsets.all(30),
-                  height: 200,
+                  height: 230,
                   color: Colors.white,
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -166,14 +227,40 @@ class Screen2State extends State<Screen2> {
                               )
                             ]),
                         SizedBox(height: 20),
-                        new Row(children: <Widget>[
+                        Text(
+                          'Merchant Pin No',
+                          style: TextStyle(
+                              fontWeight: FontWeight.normal,
+                              fontSize: (16),
+                              color: Colors.blueGrey),
+                        ),
+                        new Stack(
+                            alignment: Alignment.centerRight,
+                            children: <Widget>[
+                              new Flexible(
+                                child: new TextField(
+                                  controller: merchantController,
+                                  decoration: InputDecoration(
+                                      hintText: ('Enter Merchant Vat PIN')),
+                                ),
+                              ),
+                              IconButton(
+                                //onPressed: () => _controller.clear(),
+                                onPressed: clearTextInput,
+                                icon: Icon(
+                                  Icons.clear,
+                                  color: Colors.blueGrey[900],
+                                  size: 16.0,
+                                ),
+                              )
+                            ]),
+                        /*new Row(children: <Widget>[
                           Text(
                             'Itemize',
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: (18),
-                                color: Colors.blueGrey
-                                ),
+                                color: Colors.blueGrey),
                           ),
                           //switch button
                           Switch(
@@ -186,14 +273,123 @@ class Screen2State extends State<Screen2> {
                             activeTrackColor: Colors.lightBlueAccent,
                             activeColor: Colors.blue,
                           )
-                        ])
+                        ])*/
+                      ])),
+
+              SizedBox(height:10),
+              Container(
+                  padding: EdgeInsets.all(30),
+                  height: 300,
+                  color: Colors.white,
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          'Payment Mode',
+                          style: TextStyle(
+                              fontWeight: FontWeight.normal,
+                              fontSize: (16),
+                              color: Colors.blueGrey),
+                        ),
+                        new Stack(
+                            alignment: Alignment.centerRight,
+                            children: <Widget>[
+                              new Flexible(
+                                child: new TextField(
+                                  controller: merchantController,
+                                  decoration: InputDecoration(
+                                      hintText: ('Type or Select Merchant')),
+                                ),
+                              ),
+                              IconButton(
+                                //onPressed: () => _controller.clear(),
+                                onPressed: clearTextInput,
+                                icon: Icon(
+                                  Icons.clear,
+                                  color: Colors.blueGrey[900],
+                                  size: 16.0,
+                                ),
+                              )
+                            ]),
+                        SizedBox(height: 20),
+                        Text(
+                          'Account',
+                          style: TextStyle(
+                              fontWeight: FontWeight.normal,
+                              fontSize: (16),
+                              color: Colors.blueGrey),
+                        ),
+                        new Stack(
+                            alignment: Alignment.centerRight,
+                            children: <Widget>[
+                              new Flexible(
+                                child: new TextField(
+                                  controller: merchantController,
+                                  decoration: InputDecoration(
+                                      hintText: ('Select Account')),
+                                ),
+                              ),
+                              IconButton(
+                                //onPressed: () => _controller.clear(),
+                                onPressed: clearTextInput,
+                                icon: Icon(
+                                  Icons.clear,
+                                  color: Colors.blueGrey[900],
+                                  size: 16.0,
+                                ),
+                              )
+                            ]),
+                            SizedBox(height: 20),
+                        Text(
+                          'Currency',
+                          style: TextStyle(
+                              fontWeight: FontWeight.normal,
+                              fontSize: (16),
+                              color: Colors.blueGrey),
+                        ),
+                        DropdownButton<String>(
+                                  value: _chosenValue,
+                                  items: amounts.map<DropdownMenuItem<String>>(
+                                      (String value) {
+                                    return DropdownMenuItem<String>(
+                                        value: value, child: Text(value));
+                                  }).toList(),
+                                  //value: amount_name,
+                                  onChanged: (String value) {
+                                    setState(() {
+                                      _chosenValue = value;
+                                    });
+                                    //_onDropdownChanged(value);
+                                  }),
+                        /*new Row(children: <Widget>[
+                          Text(
+                            'Itemize',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: (18),
+                                color: Colors.blueGrey),
+                          ),
+                          //switch button
+                          Switch(
+                            value: isSwitched,
+                            onChanged: (value) {
+                              setState(() {
+                                isSwitched = value;
+                              });
+                            },
+                            activeTrackColor: Colors.lightBlueAccent,
+                            activeColor: Colors.blue,
+                          )
+                        ])*/
                       ])),
 
               //row 3
-              SizedBox(height: 10,),
+              SizedBox(
+                height: 10,
+              ),
               Container(
                   padding: EdgeInsets.all(30), //row 2 container properties
-                  height: 400,
+                  height: 450,
                   color: Colors.white,
                   child: Column(
                       //container elements are arranged in a column
@@ -207,40 +403,56 @@ class Screen2State extends State<Screen2> {
                               fontSize: (16),
                               color: Colors.redAccent),
                         ),
+                        SizedBox(height:10),
                         //input field
-                        new Stack(
-                            alignment: Alignment.centerRight,
+                        //InkWell(
+                         /* child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Row(
+                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(_selectedCategory ?? "Select category"),
+                            Icon(Icons.close),
+                          ],
+                              ),
+                              SizedBox(height: 5,),
+                              Divider(height: 10,),
+                            ],),
+                            onTap: (){
+                              showDialog(
+                                context: context,
+                                builder: (context) => AlertDialog(
+                                  content: CategoryList(
+                                    onSelect: (String value){
+                                      setState(() {
+                                        selectedValue = value;
+                                      });
+                                    }),
+                                ));
+                            },
+                            ),*/
+                        new Row(
                             children: <Widget>[
                               new Flexible(
                                 child: new TextField(
-                                  onTap: () {
+                                  onTap: ()async {
+                                    final result= await
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              CategoriesList()),
+                                              CategoryList()),
                                     );
+                                    categoryController.text=result;
                                   },
                                   controller: categoryController,
                                   decoration: InputDecoration(
                                       hintText: ('Select Category')),
                                 ),
                               ),
-                              IconButton(
-                                //onPressed: () => _controller.clear(),
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => CategoriesList()),
-                                  );
-                                },
-                                icon: Icon(
-                                  Icons.arrow_forward_ios,
-                                  color: Colors.blueGrey,
-                                  size: 16.0,
-                                ),
-                              )
                             ]),
                         SizedBox(height: 20),
                         //amount
@@ -252,7 +464,7 @@ class Screen2State extends State<Screen2> {
                               color: Colors.redAccent),
                         ),
                         //dropdown
-                        new Stack(
+                        new Row(
                             //alignment: Alignment.center,
                             children: <Widget>[
                               DropdownButton<String>(
@@ -272,6 +484,7 @@ class Screen2State extends State<Screen2> {
                               new Flexible(
                                 child: new TextField(
                                   controller: amountController,
+                                  keyboardType: TextInputType.number,
                                   decoration:
                                       InputDecoration(hintText: ('0.00')),
                                 ),
@@ -307,93 +520,88 @@ class Screen2State extends State<Screen2> {
                               )
                             ]),
 
-                          SizedBox(height: 20.0),
-                          //description
-                          Text(
-                            'Description',
-                            style: TextStyle(
+                        SizedBox(height: 20.0),
+                        //description
+                        Text(
+                          'Description',
+                          style: TextStyle(
                               fontWeight: FontWeight.normal,
                               fontSize: (16),
                               color: Colors.blueGrey),
-                          ),
-                          TextField()
+                        ),
+                        TextField(
+                          controller: descriptionController,
+                        )
+                      
                       ])),
 
-                      SizedBox(height: 10,),
+              SizedBox(
+                height: 10,
+              ),
               Container(
                   padding: EdgeInsets.all(30), //row 2 container properties
                   height: 100,
                   color: Colors.white,
-                  child:  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                          Text(
-                            'Claim Reimbursement',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: (18),
-                                color: Colors.blueGrey),
-                          ),
-                          //switch button
-                          Align(
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text(
+                          'Claim Reimbursement',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: (18),
+                              color: Colors.blueGrey),
+                        ),
+                        //switch button
+                        Align(
                             alignment: Alignment.centerRight,
-                            child: 
-                            Switch(
-                            value: isSwitched1,
-                            onChanged: (value) {
-                              setState(() {
-                                isSwitched = value;
-                              });
-                            },
-                            activeTrackColor: Colors.redAccent[100],
-                            activeColor: Colors.redAccent,
-                          )
-                          )
-                          
-                        ])
-                  ),
+                            child: Switch(
+                              value: isSwitched1,
+                              onChanged: (value) {
+                                setState(() {
+                                  isSwitched = value;
+                                });
+                              },
+                              activeTrackColor: Colors.redAccent[100],
+                              activeColor: Colors.redAccent,
+                            ))
+                      ])),
 
-                    SizedBox(height: 10,),
+              SizedBox(
+                height: 10,
+              ),
               Container(
                   padding: EdgeInsets.all(30), //row 2 container properties
                   height: 130,
                   color: Colors.white,
-                  child:  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                    Text(
-                      'Reimbursement',
-                      style: TextStyle(
-                        color: Colors.blueGrey,
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.normal
-                        )
-                    ),
-                          //text field
-                          TextField(
-                          )
-                        ])
-                  ),
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text('Reimbursement',
+                            style: TextStyle(
+                                color: Colors.blueGrey,
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.normal)),
+                        //text field
+                        TextField()
+                      ])),
 
-                  SizedBox(height: 10.0),
-                //to set row properties
-                Container(
+              SizedBox(height: 10.0),
+              //to set row properties
+              Container(
                   padding: EdgeInsets.all(30), //row 2 container properties
                   height: 130,
                   color: Colors.white,
-                  child:  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                    Text(
-                      'Add To Report',
-                      style: TextStyle(
-                        color: Colors.blueGrey,
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.normal
-                        )
-                    ),
-                          //text field
-                      new Stack(
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text('Add To Report',
+                            style: TextStyle(
+                                color: Colors.blueGrey,
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.normal)),
+                        //text field
+                        new Stack(
                             alignment: Alignment.centerRight,
                             children: <Widget>[
                               new Flexible(
@@ -413,335 +621,143 @@ class Screen2State extends State<Screen2> {
                                 ),
                               )
                             ]),
-                        ])
-                  )
+                      ])),
 
-            ]
-            )
-            )
-            );
-    /*child: Column(
-          mainAxisSize: MainAxisSize.max,
-          children: <Widget>[
-            //row 1
-            // recent reports
-            Container(
-              color: Colors.transparent,
-              child: Column(
-                children: [
-                  
-                  // title
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    
-                 
-                  // body
-                child: Container(
-                    color: Colors.white,
-                    width: double.infinity,
-                    padding: EdgeInsets.all(
-                        20), //space around container. i.e, size of container vs elements inside
-                    child: Column(
-                      children: [
-                        //Padding(
-                           // padding: EdgeInsets.only(
-                            //    top: _formDistance, bottom: _formDistance),
-                                Text(_dateTime == null ? 'Expense Date' : _dateTime.toString()),
-                                RaisedButton(
-                                  color: Colors.white,
-                                  //border: Border.all( color: Colors.redAccent, width: 1),
-                                  //borderRadius: BorderRadius.circular(17),
-                                  child: Text(
-                                    'Please Select Date',  
-                                    style: TextStyle(
-                                      color: Colors.deepOrangeAccent,
-                                      fontSize: 16
-                                    ),
-                                  ),
-                                  onPressed: () {
-                                    showDatePicker(context: context, 
-                                    initialDate: DateTime.now(), 
-                                    firstDate: DateTime(2000), 
-                                    lastDate: DateTime(2030)
-                                    ).then((date) {
-                                      setState(() {
-                                        _dateTime = date;
-                                      });
-                                    });
-                                  },
-                                )
-                            /*child: TextField(
-                              controller: expenseController,
-                              decoration: InputDecoration(
-                                labelText: 'Expense Date*',
-                                hintText: 'Select Date',
-                                labelStyle: textstyle,
-                              ),
-                              style: TextStyle(
-                                  color: Colors.deepOrangeAccent, fontSize: 16),
-                              keyboardType: TextInputType.datetime,
-                            )*/
-                          //  )
-                      ],
-                    ),
-                  )
-                   ),
-                ],
-              ),
-            ),
-            
-            //row2
-            // Spending overview
-            Container(
-              color: Colors.transparent,
-              child: Column(
-                children: [
-                  // title
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Row(),
-                  ),
-                  // body
-                  Container(
-                    color: Colors.white,
-                    width: double.infinity,
-                    //padding: EdgeInsets.symmetric(horizontal: 0, vertical: 35),
-                    padding: EdgeInsets.all(20),
-                    child: Column(
-                      children: [
-                        TextField(
-                              controller: expenseController,
-                              decoration: InputDecoration(
-                                labelText: 'Merchant',
-                                hintText: 'Type or Select Merchant',
-                                labelStyle: textstyle,
-                                
-                              ),
-                              style: TextStyle(
-                                  color: Colors.deepOrangeAccent, fontSize: 16),
-                              keyboardType: TextInputType.text,
-                            ),
-                        /*DropdownField(
-                          onValueChanged: (dynamic value) {
-                            merchant_name = value;
-                          },
-                          value: merchant_name,
-                          required: true,
-                          hintText: 'Type or Select Merchant',
-                          labelText: 'Merchant',
-                          items: merchant,
-                        )*/
-                        DropdownButton<String>(
-                items: merchants.map((String value){
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value)
-                    );
-                }).toList(), 
-                value: merchant_name,
-                onChanged: (String value) {
-                  _onDropdownChanged(value);
-                }),
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            ),
-
-            //row3
-            // category
-            Container(
-              color: Colors.transparent,
-              child: Column(
-                children: [
-                  // title
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Row(),
-                  ),
-                  // body
-                  Container(
-                    color: Colors.white,
-                    width: double.infinity,
-                    //padding: EdgeInsets.symmetric(horizontal: 0, vertical: 35),
-                    padding: EdgeInsets.all(20),
-                    child: Column(
-                      children: [
-                        Padding(
-                            padding: EdgeInsets.only(
-                                top: _formDistance, bottom: _formDistance),
-                            child: TextField(
-                              controller: expenseController,
-                              decoration: InputDecoration(
-                                labelText: 'Category',
-                                hintText: 'Select Category',
-                                labelStyle: textstyle,
-                              ),
-                              style: TextStyle(
-                                  color: Colors.deepOrangeAccent, fontSize: 16),
-                              keyboardType: TextInputType.text,
-                            ))
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            ),
-
-            //amount
-            Container(
-              color: Colors.transparent,
-              child: Column(
-                children: [
-                  // title
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Row(),
-                  ),
-                  // body
-                  Container(
-                    color: Colors.white,
-                    width: double.infinity,
-                    //padding: EdgeInsets.symmetric(horizontal: 0, vertical: 35),
-                    padding: EdgeInsets.all(20),
-                    child: Column(
-                      children: [
-                        Padding(
-                            padding: EdgeInsets.only(
-                                top: _formDistance, bottom: _formDistance),
-                            child: TextField(
-                              controller: expenseController,
-                              decoration: InputDecoration(
-                                labelText: 'Amount',
-                                labelStyle: textstyle,
-                              ),
-                              style: TextStyle(
-                                  color: Colors.deepOrangeAccent, fontSize: 16),
-                              keyboardType: TextInputType.text,
-                            )
-                            ),
-                                DropdownButton<String>(
-                items: _currencies.map((String value){
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value)
-                    );
-                }).toList(), 
-                value: _currency,
-                onChanged: (String value) {
-                  _onDropdownChanged(value);
-                }),
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            ),
-
-            //tax
-            Container(
-              color: Colors.transparent,
-              child: Column(
-                children: [
-                  // title
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Row(),
-                  ),
-                  // body
-                  Container(
-                    color: Colors.white,
-                    width: double.infinity,
-                    //padding: EdgeInsets.symmetric(horizontal: 0, vertical: 35),
-                    padding: EdgeInsets.all(20),
-                    child: Column(
-                      children: [
-                        Padding(
-                            padding: EdgeInsets.only(
-                                top: _formDistance, bottom: _formDistance),
-                            child: TextField(
-                              controller: expenseController,
-                              decoration: InputDecoration(
-                                labelText: 'Tax',
-                                hintText: 'Type to Select Tax',
-                                labelStyle: textstyle,
-                              ),
-                              style: TextStyle(
-                                  color: Colors.deepOrangeAccent, fontSize: 16),
-                              keyboardType: TextInputType.text,
-                            ))
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            ),
-
-            //description
+              SizedBox(height: 10.0),
+              //to set row properties
+              //save button area
               Container(
-              color: Colors.transparent,
-              child: Column(
-                children: [
-                  // title
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Row(),
-                  ),
-                  // body
-                  Container(
-                    color: Colors.white,
-                    width: double.infinity,
-                    //padding: EdgeInsets.symmetric(horizontal: 0, vertical: 35),
-                    padding: EdgeInsets.all(20),
-                    child: Column(
-                      children: [
-                        Padding(
-                            padding: EdgeInsets.only(
-                                top: _formDistance, bottom: _formDistance),
-                            child: TextField(
-                              controller: expenseController,
-                              decoration: InputDecoration(
-                                labelText: 'Description',
-                                hintText: ' ',
-                                labelStyle: textstyle,
-                              ),
-                              style: TextStyle(
-                                  color: Colors.deepOrangeAccent, fontSize: 16),
-                              keyboardType: TextInputType.text,
-                            ))
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            ),
-
-          ],
-        ), */
+                  padding: EdgeInsets.all(30), //row container properties
+                  // height: 120,
+                  width: double.infinity,
+                  color: Colors.white,
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        RaisedButton(
+                          child: Text(
+                            "Save",
+                            style: TextStyle(color: Colors.white, fontSize: 16),
+                          ),
+                          hoverColor: Colors.white,
+                          color: Colors.redAccent,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(17.0),
+                              side: BorderSide(color: Colors.red)),
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                          splashColor: Colors.grey,
+                          // onPressed: getData
+                          onPressed: () {
+                            return showDialog(
+                              context: context, 
+                              builder: (context){
+                                return AlertDialog(
+                                  content:
+                                  Container(height: 300,width: 300,
+                                  child:ListView(
+                                    children: <Widget>[
+                                        ListTile(
+                                          title: Text(_dateTime.toString(),
+                                        ),),
+                                         ListTile(
+                                          title: Text(merchantController.text),
+                                       ),
+                                       ListTile(
+                                          title: Text(categoryController.text),
+                                       ),
+                                       ListTile(
+                                          title: Text(_chosenValue),
+                                       ),
+                                       ListTile(
+                                          title: Text(taxController.text),
+                                       ),
+                                       ListTile(
+                                          title: Text(expenseController.text),
+                                       ),
+                                       ]
+                                  )
+                                  )
+                                );
+                              },
+                            );
+                        
+                            /* return showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                      content: ListView(
+                                        shrinkWrap: true,
+                                          //merchantController.text
+                                          children: <Widget>[
+                                        ListTile(
+                                          title: Text(merchantController.text),
+                                        ),
+                                        /* ListTile(
+                         title: Text(categoryController.text),
+                       ),
+                       ListTile(
+                         title: Text(amountController.text),
+                       ),
+                       ListTile(
+                         title: Text(taxController.text),
+                       ),
+                       ListTile(
+                         title: Text(reportController.text),
+                       )*/
+                                      ]));
+                                });*/
+                          },
+                        ),
+                      ]))
+            ])));
   }
 }
 
 void _onDropdownChanged(String value) {}
 
-class CategoriesList extends StatelessWidget {
+class CategoryList extends StatelessWidget {
+  CategoryList({this.onSelect});
+  final Function(String) onSelect;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(title: Text('Categories')),
-        body: Card(
-            child: ListView(
-          children: <Widget>[
-            ListTile(
-              title: Text('Sun'),
-            ),
-            ListTile(
-              title: Text('Moon'),
-            ),
-            ListTile(
-              title: Text('Star'),
-            ),
-          ],
-        )));
+     return Scaffold(
+          body:ListView.builder(
+      itemCount: 20,
+      itemBuilder: (BuildContext context, int index){
+        return ListTile(
+          title: Text("category_${index+1}"),
+          onTap: (){
+
+            print("category_${index+1}");
+            Navigator.of(context).pop("category_${index+1}");
+          },
+        );
+      },
+      )
+    );
   }
 }
+/*
+class CategoryList extends StatelessWidget {
+  CategoryList({this.onSelect});
+  final Function(String) onSelect;
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 2000,
+      height: 100000,
+      child: ListView.builder(
+      itemCount: 6,
+      itemBuilder: (BuildContext context, int index){
+        return ListTile(
+          title: Text("category_${index+1}"),
+          onTap: (){
+            onSelect("category_${index+1}");
+            Navigator.of(context).pop();
+          },
+        );
+      },
+    ));
+  }
+}*/

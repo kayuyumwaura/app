@@ -6,6 +6,13 @@ class Screen1 extends StatefulWidget {
    }
 
 class Screen1State extends State<Screen1> {
+  int _currentIndex = 0;
+  final widgetOptions = [
+    Text('Beer List'),
+    Text('Add new beer'),
+    Text('Favourites'),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return  SingleChildScrollView(
@@ -338,10 +345,14 @@ class Screen1State extends State<Screen1> {
             ),
           ],
         ),
-      )
+      ),
+       
     );
   }
+    void onTabTapped(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
+  }
 }
-
-
 
