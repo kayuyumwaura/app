@@ -64,6 +64,9 @@ class Screen2State extends State<Screen2> {
   ];
   String selectedValue;
   String _selectedCategory;
+
+  //radio button
+  String radioItem = '';
   /*final myController = TextEditingController();
   final items = List<String>();
   String selectedValue;
@@ -279,7 +282,7 @@ class Screen2State extends State<Screen2> {
               SizedBox(height:10),
               Container(
                   padding: EdgeInsets.all(30),
-                  height: 300,
+                  height: 315,
                   color: Colors.white,
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -291,26 +294,36 @@ class Screen2State extends State<Screen2> {
                               fontSize: (16),
                               color: Colors.blueGrey),
                         ),
-                        new Stack(
-                            alignment: Alignment.centerRight,
+                        new Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
-                              new Flexible(
-                                child: new TextField(
-                                  controller: merchantController,
-                                  decoration: InputDecoration(
-                                      hintText: ('Type or Select Merchant')),
-                                ),
-                              ),
-                              IconButton(
-                                //onPressed: () => _controller.clear(),
-                                onPressed: clearTextInput,
-                                icon: Icon(
-                                  Icons.clear,
-                                  color: Colors.blueGrey[900],
-                                  size: 16.0,
-                                ),
-                              )
+                              Expanded(child: 
+                              RadioListTile(
+                                title: Text('Cash',
+                                style: TextStyle(color: Colors.blueGrey),),
+                                value: 0,
+                                groupValue: radioItem,
+                                onChanged: (val){
+                                  setState(() {
+                                    radioItem = val;
+                                  });
+                                },
+                              ),),
+                              Expanded(child: 
+                              RadioListTile(
+                                title: Text('Cheque', 
+                                style: TextStyle(color: Colors.grey),),
+                                value: 0,
+                                groupValue: radioItem,
+                                onChanged: (val){
+                                  setState(() {
+                                    radioItem = val;
+                                  });
+                                },
+                              ),)
+                              
                             ]),
+                        Divider(color: Colors.blueGrey,),
                         SizedBox(height: 20),
                         Text(
                           'Account',
@@ -662,6 +675,9 @@ class Screen2State extends State<Screen2> {
                                         ),),
                                          ListTile(
                                           title: Text(merchantController.text),
+                                       ),
+                                       ListTile(
+                                          title: Text(radioItem),
                                        ),
                                        ListTile(
                                           title: Text(categoryController.text),
