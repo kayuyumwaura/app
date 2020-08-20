@@ -17,25 +17,76 @@ class Screen2State extends State<Screen2> {
   final _currencies = ['KES', 'AED', 'YEN'];
   String _currency = 'KES';
   TextEditingController expenseController = TextEditingController();
-  TextEditingController descriptionController = TextEditingController();
-  TextEditingController amountController = TextEditingController();
-  TextEditingController categoryController = TextEditingController();
   //clear icon in merchant
   var merchantController = TextEditingController();
   clearTextInput() {
     merchantController.clear();
   }
 
-  //clear icon in tax
-  var taxController = TextEditingController();
-  clearTextInput2() {
-    taxController.clear();
+  //merchantpin
+  var merchantpinController = TextEditingController();
+  clearTextInput1() {
+    merchantpinController.clear();
   }
 
-  //clear icon in report
-  var reportController = TextEditingController();
+  //paymentmode
+  var paymentmodeController = TextEditingController();
+  clearTextInput2() {
+    paymentmodeController.clear();
+  }
+
+  //account
+  var accountController = TextEditingController();
   clearTextInput3() {
-    reportController.clear();
+    accountController.clear();
+  }
+
+  //category
+  var categoryController = TextEditingController();
+  clearTextInput4() {
+    categoryController.clear();
+  }
+
+  //customers
+  var customerController = TextEditingController();
+  clearTextInput5() {
+    customerController.clear();
+  }
+
+  //project
+  var projectController = TextEditingController();
+  clearTextInput6() {
+    projectController.clear();
+  }
+
+  //description
+  var descriptionController = TextEditingController();
+  clearTextInput7() {
+    descriptionController.clear();
+  }
+
+  //amount
+  var amountController = TextEditingController();
+  clearTextInput8() {
+    amountController.clear();
+  }
+
+  //preparedby
+  var preparedbyController = TextEditingController();
+  clearTextInput9() {
+    preparedbyController.clear();
+  }
+
+  //approvedby
+  var approvedbyController = TextEditingController();
+  clearTextInput10() {
+    approvedbyController.clear();
+  }
+
+  //receivedby
+  var receivedbyController = TextEditingController();
+  clearTextInput11() {
+    receivedbyController.clear();
   }
 
   //itemize switch button
@@ -81,19 +132,23 @@ class Screen2State extends State<Screen2> {
 //new getdata function
 //get data from internet,. might take a whle so we use the async
 //use future so that we return something when the function is down
-  /*Future<String> getData() async {
+  List data;
+  Future<String> getData() async {
     http.Response response = await http.get(
       "https://jsonplaceholder.typicode.com/posts",
       //authenticate here if necessary
       headers: {
-        "Accept": "application/json"
+        "Accept": "application/json"    //telling it to accept json data
       }
     );
    // print(response.body);
    List data = json.decode(response.body);
    print(data[1]["title"]);
    //print(data);
-  }*/
+  }
+
+  //add item
+  
 
   @override
   Widget build(BuildContext context) {
@@ -216,11 +271,10 @@ class Screen2State extends State<Screen2> {
                                 child: new TextField(
                                   controller: merchantController,
                                   decoration: InputDecoration(
-                                      hintText: ('Type or Select Merchant')),
+                                      hintText: ('Select Merchant')),
                                 ),
                               ),
                               IconButton(
-                                //onPressed: () => _controller.clear(),
                                 onPressed: clearTextInput,
                                 icon: Icon(
                                   Icons.clear,
@@ -242,14 +296,13 @@ class Screen2State extends State<Screen2> {
                             children: <Widget>[
                               new Flexible(
                                 child: new TextField(
-                                  controller: merchantController,
+                                  controller: merchantpinController,
                                   decoration: InputDecoration(
                                       hintText: ('Enter Merchant Vat PIN')),
                                 ),
                               ),
                               IconButton(
-                                //onPressed: () => _controller.clear(),
-                                onPressed: clearTextInput,
+                                onPressed: clearTextInput1,
                                 icon: Icon(
                                   Icons.clear,
                                   color: Colors.blueGrey[900],
@@ -337,14 +390,14 @@ class Screen2State extends State<Screen2> {
                             children: <Widget>[
                               new Flexible(
                                 child: new TextField(
-                                  controller: merchantController,
+                                  controller: accountController,
                                   decoration: InputDecoration(
                                       hintText: ('Select Account')),
                                 ),
                               ),
                               IconButton(
                                 //onPressed: () => _controller.clear(),
-                                onPressed: clearTextInput,
+                                onPressed: clearTextInput3(),
                                 icon: Icon(
                                   Icons.clear,
                                   color: Colors.blueGrey[900],
@@ -402,7 +455,7 @@ class Screen2State extends State<Screen2> {
               ),
               Container(
                   padding: EdgeInsets.all(30), //row 2 container properties
-                  height: 450,
+                  height: 550,
                   color: Colors.white,
                   child: Column(
                       //container elements are arranged in a column
@@ -418,35 +471,6 @@ class Screen2State extends State<Screen2> {
                         ),
                         SizedBox(height:10),
                         //input field
-                        //InkWell(
-                         /* child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Row(
-                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(_selectedCategory ?? "Select category"),
-                            Icon(Icons.close),
-                          ],
-                              ),
-                              SizedBox(height: 5,),
-                              Divider(height: 10,),
-                            ],),
-                            onTap: (){
-                              showDialog(
-                                context: context,
-                                builder: (context) => AlertDialog(
-                                  content: CategoryList(
-                                    onSelect: (String value){
-                                      setState(() {
-                                        selectedValue = value;
-                                      });
-                                    }),
-                                ));
-                            },
-                            ),*/
                         new Row(
                             children: <Widget>[
                               new Flexible(
@@ -466,47 +490,46 @@ class Screen2State extends State<Screen2> {
                                       hintText: ('Select Category')),
                                 ),
                               ),
+                              IconButton(
+                            onPressed: clearTextInput4,
+                            icon: Icon(Icons.clear,
+                            color: Colors.blueGrey,
+                            size: 16.0,
+                            ),)
                             ]),
                         SizedBox(height: 20),
-                        //amount
+                        //customer
                         Text(
-                          'Amount*',
+                          'Customer',
                           style: TextStyle(
                               fontWeight: FontWeight.normal,
+                              color: Colors.blueGrey,
                               fontSize: (16),
-                              color: Colors.redAccent),
-                        ),
-                        //dropdown
-                        new Row(
-                            //alignment: Alignment.center,
-                            children: <Widget>[
-                              DropdownButton<String>(
-                                  value: _chosenValue,
-                                  items: amounts.map<DropdownMenuItem<String>>(
-                                      (String value) {
-                                    return DropdownMenuItem<String>(
-                                        value: value, child: Text(value));
-                                  }).toList(),
-                                  //value: amount_name,
-                                  onChanged: (String value) {
-                                    setState(() {
-                                      _chosenValue = value;
-                                    });
-                                    //_onDropdownChanged(value);
-                                  }),
-                              new Flexible(
-                                child: new TextField(
-                                  controller: amountController,
-                                  keyboardType: TextInputType.number,
-                                  decoration:
-                                      InputDecoration(hintText: ('0.00')),
-                                ),
                               ),
-                            ]),
+                        ),
+                        //textfield
+                        new Stack(
+                          alignment: Alignment.centerRight,
+                          children: <Widget>[
+                            TextField(
+                              controller: customerController,
+                              decoration: InputDecoration(
+                                hintText: ('Select Customer'),
+                              )
+                            ),
+                          IconButton(
+                            onPressed: clearTextInput5,
+                            icon: Icon(Icons.clear,
+                            color: Colors.blueGrey,
+                            size: 16.0,
+                            ),)
+                          ],
+                        ),
+
                         SizedBox(height: 20),
                         //tax input field
                         Text(
-                          'Tax',
+                          'Project',
                           style: TextStyle(
                               fontWeight: FontWeight.normal,
                               fontSize: (16),
@@ -517,14 +540,14 @@ class Screen2State extends State<Screen2> {
                             children: <Widget>[
                               new Flexible(
                                 child: new TextField(
-                                  controller: taxController,
+                                  controller: projectController,
                                   decoration: InputDecoration(
-                                      hintText: ('Type to select tax')),
+                                      hintText: ('Select Project')),
                                 ),
                               ),
                               IconButton(
                                 //onPressed: () => _controller.clear(),
-                                onPressed: clearTextInput2,
+                                onPressed: clearTextInput6,
                                 icon: Icon(
                                   Icons.clear,
                                   color: Colors.blueGrey,
@@ -542,13 +565,74 @@ class Screen2State extends State<Screen2> {
                               fontSize: (16),
                               color: Colors.blueGrey),
                         ),
-                        TextField(
-                          controller: descriptionController,
-                        )
-                      
+                        new Stack(
+                            alignment: Alignment.centerRight,
+                            children: <Widget>[
+                              new Flexible(
+                                child: new TextField(
+                                  keyboardType: TextInputType.multiline,
+                                  controller: descriptionController,
+                                ),
+                              ),
+                              IconButton(
+                                onPressed: clearTextInput7,
+                                icon: Icon(
+                                  Icons.clear,
+                                  color: Colors.blueGrey,
+                                  size: 16.0,
+                                ),
+                              )
+                            ]),
+
+                            SizedBox(height: 20.0),
+                        //amount
+                        Text(
+                          'Amount',
+                          style: TextStyle(
+                              fontWeight: FontWeight.normal,
+                              fontSize: (16),
+                              color: Colors.blueGrey),
+                        ),
+                        new Stack(
+                            alignment: Alignment.centerRight,
+                            children: <Widget>[
+                              new Flexible(
+                                child: new TextField(
+                                  controller: amountController,
+                                  keyboardType: TextInputType.number,
+                                  decoration: InputDecoration(
+                                      hintText: ('0.00')),
+                                ),
+                              ),
+                              IconButton(
+                                onPressed: clearTextInput8,
+                                icon: Icon(
+                                  Icons.clear,
+                                  color: Colors.blueGrey,
+                                  size: 16.0,
+                                ),
+                              )
+                            ]),
+                            SizedBox(height: 20),
+                            RaisedButton(
+                          child: Text(
+                            "add item",
+                            style: TextStyle(color: Colors.white, fontSize: 16),
+                          ),
+                            
+                          hoverColor: Colors.white,
+                          color: Colors.redAccent,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(17.0),
+                              side: BorderSide(color: Colors.red)),
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                          splashColor: Colors.grey,  
+                          onPressed: (){},                 
+                          ),
                       ])),
 
-              SizedBox(
+            /*  SizedBox(
                 height: 10,
               ),
               Container(
@@ -597,7 +681,7 @@ class Screen2State extends State<Screen2> {
                                 fontWeight: FontWeight.normal)),
                         //text field
                         TextField()
-                      ])),
+                      ])),*/
 
               SizedBox(height: 10.0),
               //to set row properties
@@ -608,7 +692,7 @@ class Screen2State extends State<Screen2> {
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text('Add To Report',
+                        Text('Prepared  By',
                             style: TextStyle(
                                 color: Colors.blueGrey,
                                 fontSize: 16.0,
@@ -619,14 +703,12 @@ class Screen2State extends State<Screen2> {
                             children: <Widget>[
                               new Flexible(
                                 child: new TextField(
-                                  controller: reportController,
-                                  decoration: InputDecoration(
-                                      hintText: ('Select Report')),
+                                  controller: preparedbyController,
                                 ),
                               ),
                               IconButton(
                                 //onPressed: () => _controller.clear(),
-                                onPressed: clearTextInput3,
+                                onPressed: clearTextInput9,
                                 icon: Icon(
                                   Icons.clear,
                                   color: Colors.blueGrey,
@@ -634,6 +716,59 @@ class Screen2State extends State<Screen2> {
                                 ),
                               )
                             ]),
+                            
+                            SizedBox(height: 20),
+                            Text('Approved  By',
+                            style: TextStyle(
+                                color: Colors.blueGrey,
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.normal)),
+                        //text field
+                        new Stack(
+                            alignment: Alignment.centerRight,
+                            children: <Widget>[
+                              new Flexible(
+                                child: new TextField(
+                                  controller: approvedbyController,
+                                ),
+                              ),
+                              IconButton(
+                                //onPressed: () => _controller.clear(),
+                                onPressed: clearTextInput10,
+                                icon: Icon(
+                                  Icons.clear,
+                                  color: Colors.blueGrey,
+                                  size: 16.0,
+                                ),
+                              )
+                            ]),
+
+                            SizedBox(height: 20),
+                            Text('Received  By',
+                            style: TextStyle(
+                                color: Colors.blueGrey,
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.normal)),
+                        //text field
+                        new Stack(
+                            alignment: Alignment.centerRight,
+                            children: <Widget>[
+                              new Flexible(
+                                child: new TextField(
+                                  controller: receivedbyController,
+                                ),
+                              ),
+                              IconButton(
+                                //onPressed: () => _controller.clear(),
+                                onPressed: clearTextInput11,
+                                icon: Icon(
+                                  Icons.clear,
+                                  color: Colors.blueGrey,
+                                  size: 16.0,
+                                ),
+                              )
+                            ]),
+
                       ])),
 
               SizedBox(height: 10.0),
@@ -686,7 +821,7 @@ class Screen2State extends State<Screen2> {
                                           title: Text(_chosenValue),
                                        ),
                                        ListTile(
-                                          title: Text(taxController.text),
+                                          title: Text(projectController.text),
                                        ),
                                        ListTile(
                                           title: Text(expenseController.text),
