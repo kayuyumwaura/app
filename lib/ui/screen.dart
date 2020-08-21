@@ -18,6 +18,12 @@ class Screen2State extends State<Screen2> {
   String _currency = 'KES';
   TextEditingController expenseController = TextEditingController();
   //clear icon in merchant
+  var dateController = TextEditingController();
+  clearTextInput0() {
+    dateController.clear();
+  }
+
+  //clear icon in merchant
   var merchantController = TextEditingController();
   clearTextInput() {
     merchantController.clear();
@@ -106,7 +112,7 @@ class Screen2State extends State<Screen2> {
     "category_5","category 6"];*/
   //List<String> merchant = ['KES', 'EURO', 'YEN', 'Parisland', 'Quickmart'];
 
- /*final List<String> _categories = [
+  /*final List<String> _categories = [
     "category_1",
     "category_2",
     "category_3",
@@ -117,7 +123,27 @@ class Screen2State extends State<Screen2> {
   String _selectedCategory;*/
 
   //radio button
-  String radioItem = '';
+  String _radioValue;
+  String choice;
+  void radioButtonChanges(String value) {
+    setState(() {
+      _radioValue = value;
+      switch (value) {
+        case 'Cash':
+          choice = value;
+          break;
+        case 'Card':
+          choice = value;
+          break;
+        case 'Credit':
+          choice = value;
+          break;
+        default:
+          choice = null;
+      }
+    });
+  }
+
   /*final myController = TextEditingController();
   final items = List<String>();
   String selectedValue;
@@ -134,21 +160,19 @@ class Screen2State extends State<Screen2> {
 //use future so that we return something when the function is down
   List data;
   Future<String> getData() async {
-    http.Response response = await http.get(
-      "https://jsonplaceholder.typicode.com/posts",
-      //authenticate here if necessary
-      headers: {
-        "Accept": "application/json"    //telling it to accept json data
-      }
-    );
-   // print(response.body);
-   List data = json.decode(response.body);
-   print(data[1]["title"]);
-   //print(data);
+    http.Response response =
+        await http.get("https://jsonplaceholder.typicode.com/posts",
+            //authenticate here if necessary
+            headers: {
+          "Accept": "application/json" //telling it to accept json data
+        });
+     print(response.body);
+    //List data = json.decode(response.body);
+    //print(data[1]["title"]);
+    print(data);
   }
 
   //add item
-  
 
   @override
   Widget build(BuildContext context) {
@@ -173,7 +197,7 @@ class Screen2State extends State<Screen2> {
             child: Column(//whole page is a column
                 children: <Widget>[
               //row 1
-             /* Container(
+              /* Container(
                 //to set row properties
                 padding: EdgeInsets.all(30), //padding for all things in the row
                 height: 150,
@@ -254,39 +278,64 @@ class Screen2State extends State<Screen2> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                        "Expense Date",
-                        textAlign: TextAlign.right,
-                        textDirection: TextDirection.ltr,
-                        style: TextStyle(
-                            fontWeight: FontWeight.normal,
-                            fontSize: 16.0,
-                            color: Colors.blueGrey),
-                      ),
-                      //date input field
-                      Text(_dateTime == null ? ' ' : _dateTime.toString()),
-                      RaisedButton(
-                        color: Colors.white,
-                        //border: Border.all( color: Colors.redAccent, width: 1),
-                        //borderRadius: BorderRadius.circular(17),
-                        child: Text(
-                          'Please Select Date',
-                          style: TextStyle(fontSize: 16),
+                          "Expense Date",
+                          textAlign: TextAlign.right,
+                          textDirection: TextDirection.ltr,
+                          style: TextStyle(
+                              fontWeight: FontWeight.normal,
+                              fontSize: 16.0,
+                              color: Colors.blueGrey),
                         ),
-                        onPressed: () {
-                          showDatePicker(
-                                  context: context,
-                                  initialDate: DateTime.now(),
-                                  firstDate: DateTime(2000),
-                                  lastDate: DateTime(2030))
-                              .then((date) {
-                            setState(() {
-                              _dateTime = date;
+                        //date input field
+                        new Stack(
+                            alignment: Alignment.centerRight,
+                            children: <Widget>[
+                              new Flexible(
+                                child: new TextField(
+                                  controller: dateController,
+                                  decoration: InputDecoration(
+                                    
+                                    prefixIcon: Icon(
+                                      Icons.date_range,
+                                      color: Colors.blueGrey,
+                                      
+                                    ),
+                                    hintText: ('Select Date'),
+                                  ),
+                                ),
+                              ),
+                              IconButton(
+                                onPressed: clearTextInput0,
+                                icon: Icon(
+                                  Icons.clear,
+                                  color: Colors.blueGrey[900],
+                                  size: 16.0,
+                                ),
+                              )
+                            ]),
+                        RaisedButton(
+                          color: Colors.white,
+                          //border: Border.all( color: Colors.redAccent, width: 1),
+                          //borderRadius: BorderRadius.circular(17),
+                          child: Text(
+                            _dateTime == null ? ' ' : _dateTime.toString(),
+                            style: TextStyle(fontSize: 16),
+                          ),
+                          onPressed: () {
+                            showDatePicker(
+                                    context: context,
+                                    initialDate: DateTime.now(),
+                                    firstDate: DateTime(2000),
+                                    lastDate: DateTime(2030))
+                                .then((date) {
+                              setState(() {
+                                _dateTime = date;
+                              });
                             });
-                          });
-                        },
-                      ),
+                          },
+                        ),
 
-                      SizedBox(height: 20),
+                        SizedBox(height: 20),
                         Text(
                           'Merchant',
                           style: TextStyle(
@@ -294,32 +343,31 @@ class Screen2State extends State<Screen2> {
                               fontSize: (16),
                               color: Colors.blueGrey),
                         ),
-                        new Row(
-                            children: <Widget>[
-                              new Flexible(
-                                child: new TextField(
-                                  onTap: ()async {
-                                    final result= await
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              MerchantList()),
-                                    );
-                                    merchantController.text=result;
-                                  },
-                                  controller: merchantController,
-                                  decoration: InputDecoration(
-                                      hintText: ('Select Merchant')),
-                                ),
-                              ),
-                              IconButton(
+                        new Row(children: <Widget>[
+                          new Flexible(
+                            child: new TextField(
+                              onTap: () async {
+                                final result = await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => MerchantList()),
+                                );
+                                merchantController.text = result;
+                              },
+                              controller: merchantController,
+                              decoration: InputDecoration(
+                                  hintText: ('Select Merchant')),
+                            ),
+                          ),
+                          IconButton(
                             onPressed: clearTextInput,
-                            icon: Icon(Icons.clear,
-                            color: Colors.blueGrey,
-                            size: 16.0,
-                            ),)
-                            ]),
+                            icon: Icon(
+                              Icons.clear,
+                              color: Colors.blueGrey,
+                              size: 16.0,
+                            ),
+                          )
+                        ]),
                         SizedBox(height: 20),
                         Text(
                           'Merchant Pin No',
@@ -369,13 +417,14 @@ class Screen2State extends State<Screen2> {
                         ])*/
                       ])),
 
-              SizedBox(height:10),
+              SizedBox(height: 10),
               Container(
                   padding: EdgeInsets.all(30),
                   height: 315,
                   color: Colors.white,
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
                         Text(
                           'Payment Mode',
@@ -386,8 +435,31 @@ class Screen2State extends State<Screen2> {
                         ),
                         new Row(
                             mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
                             children: <Widget>[
-                              Expanded(child: 
+                              Radio(
+                                value: 'Cash',
+                                groupValue: _radioValue,
+                                onChanged: radioButtonChanges,
+                              ),
+                              Text('Cash',
+                              style: TextStyle(color: Colors.blueGrey, fontSize: 16.0),),
+                              Radio(
+                                value: 'Card',
+                                groupValue: _radioValue,
+                                onChanged: radioButtonChanges,
+                              ),
+                              Text('Card',
+                              style: TextStyle(color: Colors.blueGrey, fontSize: 16.0),),
+                              Radio(
+                                value: 'Credit',
+                                groupValue: _radioValue,
+                                onChanged: radioButtonChanges,
+                              ),
+                              Text('Credit',
+                              style: TextStyle(color: Colors.blueGrey, fontSize: 16.0),
+                              )
+                              /*  Expanded(child: 
                               RadioListTile(
                                 title: Text('Cash',
                                 style: TextStyle(color: Colors.blueGrey),),
@@ -410,10 +482,13 @@ class Screen2State extends State<Screen2> {
                                     radioItem = val;
                                   });
                                 },
-                              ),)
-                              
+                              ),
+                              )
+                              */
                             ]),
-                        Divider(color: Colors.blueGrey,),
+                        Divider(
+                          color: Colors.blueGrey,
+                        ),
                         SizedBox(height: 20),
                         Text(
                           'Account',
@@ -422,33 +497,32 @@ class Screen2State extends State<Screen2> {
                               fontSize: (16),
                               color: Colors.blueGrey),
                         ),
-                        new Row(
-                            children: <Widget>[
-                              new Flexible(
-                                child: new TextField(
-                                  onTap: ()async {
-                                    final result= await
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              AccountList()),
-                                    );
-                                    accountController.text=result;
-                                  },
-                                  controller: accountController,
-                                  decoration: InputDecoration(
-                                      hintText: ('Select Account')),
-                                ),
-                              ),
-                              IconButton(
+                        new Row(children: <Widget>[
+                          new Flexible(
+                            child: new TextField(
+                              onTap: () async {
+                                final result = await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => AccountList()),
+                                );
+                                accountController.text = result;
+                              },
+                              controller: accountController,
+                              decoration:
+                                  InputDecoration(hintText: ('Select Account')),
+                            ),
+                          ),
+                          IconButton(
                             onPressed: clearTextInput4,
-                            icon: Icon(Icons.clear,
-                            color: Colors.blueGrey,
-                            size: 16.0,
-                            ),)
-                            ]),
-                            SizedBox(height: 20),
+                            icon: Icon(
+                              Icons.clear,
+                              color: Colors.blueGrey,
+                              size: 16.0,
+                            ),
+                          )
+                        ]),
+                        SizedBox(height: 20),
                         Text(
                           'Currency',
                           style: TextStyle(
@@ -457,19 +531,19 @@ class Screen2State extends State<Screen2> {
                               color: Colors.blueGrey),
                         ),
                         DropdownButton<String>(
-                                  value: _chosenValue,
-                                  items: amounts.map<DropdownMenuItem<String>>(
-                                      (String value) {
-                                    return DropdownMenuItem<String>(
-                                        value: value, child: Text(value));
-                                  }).toList(),
-                                  //value: amount_name,
-                                  onChanged: (String value) {
-                                    setState(() {
-                                      _chosenValue = value;
-                                    });
-                                    //_onDropdownChanged(value);
-                                  }),
+                            value: _chosenValue,
+                            items: amounts
+                                .map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                  value: value, child: Text(value));
+                            }).toList(),
+                            //value: amount_name,
+                            onChanged: (String value) {
+                              setState(() {
+                                _chosenValue = value;
+                              });
+                              //_onDropdownChanged(value);
+                            }),
                         /*new Row(children: <Widget>[
                           Text(
                             'Itemize',
@@ -508,12 +582,12 @@ class Screen2State extends State<Screen2> {
                           //text field
                           'EXPENSES',
                           style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: (17),
-                              color: Colors.blueGrey,
-                              ),
+                            fontWeight: FontWeight.bold,
+                            fontSize: (17),
+                            color: Colors.blueGrey,
+                          ),
                         ),
-                        SizedBox(height:20),
+                        SizedBox(height: 20),
                         Text(
                           //text field
                           'Category',
@@ -522,71 +596,69 @@ class Screen2State extends State<Screen2> {
                               fontSize: (16),
                               color: Colors.blueGrey),
                         ),
-                        SizedBox(height:10),
+                        SizedBox(height: 10),
                         //input field
-                        new Row(
-                            children: <Widget>[
-                              new Flexible(
-                                child: new TextField(
-                                  onTap: ()async {
-                                    final result= await
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              CategoryList()),
-                                    );
-                                    categoryController.text=result;
-                                  },
-                                  controller: categoryController,
-                                  decoration: InputDecoration(
-                                      hintText: ('Select Expense Category')),
-                                ),
-                              ),
-                              IconButton(
+                        new Row(children: <Widget>[
+                          new Flexible(
+                            child: new TextField(
+                              onTap: () async {
+                                final result = await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => CategoryList()),
+                                );
+                                categoryController.text = result;
+                              },
+                              controller: categoryController,
+                              decoration: InputDecoration(
+                                  hintText: ('Select Expense Category')),
+                            ),
+                          ),
+                          IconButton(
                             onPressed: clearTextInput4,
-                            icon: Icon(Icons.clear,
-                            color: Colors.blueGrey,
-                            size: 16.0,
-                            ),)
-                            ]),
+                            icon: Icon(
+                              Icons.clear,
+                              color: Colors.blueGrey,
+                              size: 16.0,
+                            ),
+                          )
+                        ]),
                         SizedBox(height: 20),
                         //customer
                         Text(
                           'Customer',
                           style: TextStyle(
-                              fontWeight: FontWeight.normal,
-                              color: Colors.blueGrey,
-                              fontSize: (16),
-                              ),
+                            fontWeight: FontWeight.normal,
+                            color: Colors.blueGrey,
+                            fontSize: (16),
+                          ),
                         ),
                         //textfield
-                        new Row(
-                            children: <Widget>[
-                              new Flexible(
-                                child: new TextField(
-                                  onTap: ()async {
-                                    final result= await
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              CustomerList()),
-                                    );
-                                    customerController.text=result;
-                                  },
-                                  controller: customerController,
-                                  decoration: InputDecoration(
-                                      hintText: ('Select Customer')),
-                                ),
-                              ),
-                              IconButton(
+                        new Row(children: <Widget>[
+                          new Flexible(
+                            child: new TextField(
+                              onTap: () async {
+                                final result = await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => CustomerList()),
+                                );
+                                customerController.text = result;
+                              },
+                              controller: customerController,
+                              decoration: InputDecoration(
+                                  hintText: ('Select Customer')),
+                            ),
+                          ),
+                          IconButton(
                             onPressed: clearTextInput4,
-                            icon: Icon(Icons.clear,
-                            color: Colors.blueGrey,
-                            size: 16.0,
-                            ),)
-                            ]),
+                            icon: Icon(
+                              Icons.clear,
+                              color: Colors.blueGrey,
+                              size: 16.0,
+                            ),
+                          )
+                        ]),
 
                         SizedBox(height: 20),
                         //tax input field
@@ -597,32 +669,31 @@ class Screen2State extends State<Screen2> {
                               fontSize: (16),
                               color: Colors.blueGrey),
                         ),
-                        new Row(
-                            children: <Widget>[
-                              new Flexible(
-                                child: new TextField(
-                                  onTap: ()async {
-                                    final result= await
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              ProjectList()),
-                                    );
-                                    projectController.text=result;
-                                  },
-                                  controller: projectController,
-                                  decoration: InputDecoration(
-                                      hintText: ('Select Project')),
-                                ),
-                              ),
-                              IconButton(
+                        new Row(children: <Widget>[
+                          new Flexible(
+                            child: new TextField(
+                              onTap: () async {
+                                final result = await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => ProjectList()),
+                                );
+                                projectController.text = result;
+                              },
+                              controller: projectController,
+                              decoration:
+                                  InputDecoration(hintText: ('Select Project')),
+                            ),
+                          ),
+                          IconButton(
                             onPressed: clearTextInput4,
-                            icon: Icon(Icons.clear,
-                            color: Colors.blueGrey,
-                            size: 16.0,
-                            ),)
-                            ]),
+                            icon: Icon(
+                              Icons.clear,
+                              color: Colors.blueGrey,
+                              size: 16.0,
+                            ),
+                          )
+                        ]),
 
                         SizedBox(height: 20.0),
                         //description
@@ -654,7 +725,7 @@ class Screen2State extends State<Screen2> {
                               )
                             ]),
 
-                            SizedBox(height: 20.0),
+                        SizedBox(height: 20.0),
                         //amount
                         Text(
                           'Amount',
@@ -670,8 +741,8 @@ class Screen2State extends State<Screen2> {
                                 child: new TextField(
                                   controller: amountController,
                                   keyboardType: TextInputType.number,
-                                  decoration: InputDecoration(
-                                      hintText: ('0.00')),
+                                  decoration:
+                                      InputDecoration(hintText: ('0.00')),
                                 ),
                               ),
                               IconButton(
@@ -683,13 +754,12 @@ class Screen2State extends State<Screen2> {
                                 ),
                               )
                             ]),
-                            SizedBox(height: 20),
-                            RaisedButton(
+                        SizedBox(height: 20),
+                        RaisedButton(
                           child: Text(
                             "add item",
                             style: TextStyle(color: Colors.white, fontSize: 16),
                           ),
-                            
                           hoverColor: Colors.white,
                           color: Colors.redAccent,
                           shape: RoundedRectangleBorder(
@@ -697,12 +767,12 @@ class Screen2State extends State<Screen2> {
                               side: BorderSide(color: Colors.red)),
                           padding:
                               EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                          splashColor: Colors.grey,  
-                          onPressed: (){},                 
-                          ),
+                          splashColor: Colors.grey,
+                          onPressed: () {},
+                        ),
                       ])),
 
-            /*  SizedBox(
+              /*  SizedBox(
                 height: 10,
               ),
               Container(
@@ -733,8 +803,6 @@ class Screen2State extends State<Screen2> {
                               activeColor: Colors.redAccent,
                             ))
                       ])),*/
-
-              
 
               SizedBox(height: 10.0),
               //to set row properties
@@ -772,9 +840,9 @@ class Screen2State extends State<Screen2> {
                                 ),
                               )
                             ]),
-                            
-                            SizedBox(height: 20),
-                            Text('Approved  By',
+
+                        SizedBox(height: 20),
+                        Text('Approved  By',
                             style: TextStyle(
                                 color: Colors.blueGrey,
                                 fontSize: 16.0,
@@ -801,8 +869,8 @@ class Screen2State extends State<Screen2> {
                               )
                             ]),
 
-                            SizedBox(height: 20),
-                            Text('Received  By',
+                        SizedBox(height: 20),
+                        Text('Received  By',
                             style: TextStyle(
                                 color: Colors.blueGrey,
                                 fontSize: 16.0,
@@ -828,7 +896,6 @@ class Screen2State extends State<Screen2> {
                                 ),
                               )
                             ]),
-
                       ])),
 
               SizedBox(height: 10.0),
@@ -854,63 +921,70 @@ class Screen2State extends State<Screen2> {
                               side: BorderSide(color: Colors.red)),
                           padding:
                               EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                         // splashColor: Colors.grey,
+                          // splashColor: Colors.grey,
                           // onPressed: getData
                           onPressed: () {
                             return showDialog(
-                              context: context, 
-                              builder: (context){
+                              context: context,
+                              builder: (context) {
                                 return AlertDialog(
-                                  content:
-                                  Container(height: 900,width: 300,
-                                  child:ListView(
-                                    children: <Widget>[
-                                        ListTile(
-                                          title: Text(_dateTime.toString(),
-                                        ),),
-                                         ListTile(
-                                          title: Text(merchantController.text),
-                                       ),
-                                       ListTile(
-                                          title: Text(merchantpinController.text),
-                                       ),
-                                       ListTile(
-                                          title: Text(radioItem),
-                                       ),
-                                       ListTile(
-                                          title: Text(accountController.text),
-                                       ),
-                                       ListTile(
-                                          title: Text(_chosenValue),
-                                       ),
-                                       ListTile(
-                                          title: Text(categoryController.text),
-                                       ),
-                                       ListTile(
-                                          title: Text(customerController.text),
-                                       ),
-                                       ListTile(
-                                          title: Text(projectController.text),
-                                       ),
-                                       ListTile(
-                                          title: Text(descriptionController.text),
-                                       ),
-                                       ListTile(
-                                          title: Text(amountController.text),
-                                       ),
-                                       ListTile(
-                                          title: Text(preparedbyController.text),
-                                       ),
-                                       ListTile(
-                                          title: Text(approvedbyController.text),
-                                       ),
-                                       ListTile(
-                                          title: Text(receivedbyController.text),
-                                       ),
-                                       ]
-                                  )
-                                  )
-                                );
+                                    content: Container(
+                                        height: 900,
+                                        width: 300,
+                                        child: ListView(children: <Widget>[
+                                          ListTile(
+                                            title: Text(
+                                              _dateTime.toString(),
+                                            ),
+                                          ),
+                                          ListTile(
+                                            title:
+                                                Text(merchantController.text),
+                                          ),
+                                          ListTile(
+                                            title: Text(
+                                                merchantpinController.text),
+                                          ),
+                                          ListTile(
+                                            title: Text(_radioValue),
+                                          ),
+                                          ListTile(
+                                            title: Text(accountController.text),
+                                          ),
+                                          ListTile(
+                                            title: Text(_chosenValue),
+                                          ),
+                                          ListTile(
+                                            title:
+                                                Text(categoryController.text),
+                                          ),
+                                          ListTile(
+                                            title:
+                                                Text(customerController.text),
+                                          ),
+                                          ListTile(
+                                            title: Text(projectController.text),
+                                          ),
+                                          ListTile(
+                                            title: Text(
+                                                descriptionController.text),
+                                          ),
+                                          ListTile(
+                                            title: Text(amountController.text),
+                                          ),
+                                          ListTile(
+                                            title:
+                                                Text(preparedbyController.text),
+                                          ),
+                                          ListTile(
+                                            title:
+                                                Text(approvedbyController.text),
+                                          ),
+                                          ListTile(
+                                            title:
+                                                Text(receivedbyController.text),
+                                          ),
+                                        ])));
                               },
                             );
                           },
@@ -928,21 +1002,19 @@ class MerchantList extends StatelessWidget {
   final Function(String) onSelect;
   @override
   Widget build(BuildContext context) {
-     return Scaffold(
-          body:ListView.builder(
+    return Scaffold(
+        body: ListView.builder(
       itemCount: 20,
-      itemBuilder: (BuildContext context, int index){
+      itemBuilder: (BuildContext context, int index) {
         return ListTile(
-          title: Text("merchant_${index+1}"),
-          onTap: (){
-
-            print("merchant_${index+1}");
-            Navigator.of(context).pop("merchabt_${index+1}");
+          title: Text("merchant_${index + 1}"),
+          onTap: () {
+            print("merchant_${index + 1}");
+            Navigator.of(context).pop("merchabt_${index + 1}");
           },
         );
       },
-      )
-    );
+    ));
   }
 }
 
@@ -952,21 +1024,19 @@ class AccountList extends StatelessWidget {
   final Function(String) onSelect;
   @override
   Widget build(BuildContext context) {
-     return Scaffold(
-          body:ListView.builder(
+    return Scaffold(
+        body: ListView.builder(
       itemCount: 20,
-      itemBuilder: (BuildContext context, int index){
+      itemBuilder: (BuildContext context, int index) {
         return ListTile(
-          title: Text("account_${index+1}"),
-          onTap: (){
-
-            print("account_${index+1}");
-            Navigator.of(context).pop("account_${index+1}");
+          title: Text("account_${index + 1}"),
+          onTap: () {
+            print("account_${index + 1}");
+            Navigator.of(context).pop("account_${index + 1}");
           },
         );
       },
-      )
-    );
+    ));
   }
 }
 
@@ -976,21 +1046,19 @@ class CategoryList extends StatelessWidget {
   final Function(String) onSelect;
   @override
   Widget build(BuildContext context) {
-     return Scaffold(
-          body:ListView.builder(
+    return Scaffold(
+        body: ListView.builder(
       itemCount: 20,
-      itemBuilder: (BuildContext context, int index){
+      itemBuilder: (BuildContext context, int index) {
         return ListTile(
-          title: Text("category_${index+1}"),
-          onTap: (){
-
-            print("category_${index+1}");
-            Navigator.of(context).pop("category_${index+1}");
+          title: Text("category_${index + 1}"),
+          onTap: () {
+            print("category_${index + 1}");
+            Navigator.of(context).pop("category_${index + 1}");
           },
         );
       },
-      )
-    );
+    ));
   }
 }
 
@@ -1000,21 +1068,19 @@ class CustomerList extends StatelessWidget {
   final Function(String) onSelect;
   @override
   Widget build(BuildContext context) {
-     return Scaffold(
-          body:ListView.builder(
+    return Scaffold(
+        body: ListView.builder(
       itemCount: 20,
-      itemBuilder: (BuildContext context, int index){
+      itemBuilder: (BuildContext context, int index) {
         return ListTile(
-          title: Text("customer_${index+1}"),
-          onTap: (){
-
-            print("customer_${index+1}");
-            Navigator.of(context).pop("customer_${index+1}");
+          title: Text("customer_${index + 1}"),
+          onTap: () {
+            print("customer_${index + 1}");
+            Navigator.of(context).pop("customer_${index + 1}");
           },
         );
       },
-      )
-    );
+    ));
   }
 }
 
@@ -1024,20 +1090,18 @@ class ProjectList extends StatelessWidget {
   final Function(String) onSelect;
   @override
   Widget build(BuildContext context) {
-     return Scaffold(
-          body:ListView.builder(
+    return Scaffold(
+        body: ListView.builder(
       itemCount: 20,
-      itemBuilder: (BuildContext context, int index){
+      itemBuilder: (BuildContext context, int index) {
         return ListTile(
-          title: Text("project_${index+1}"),
-          onTap: (){
-
-            print("project_${index+1}");
-            Navigator.of(context).pop("project_${index+1}");
+          title: Text("project_${index + 1}"),
+          onTap: () {
+            print("project_${index + 1}");
+            Navigator.of(context).pop("project_${index + 1}");
           },
         );
       },
-      )
-    );
+    ));
   }
 }
