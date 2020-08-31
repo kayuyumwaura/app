@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:ui/main.dart';
 import 'package:ui/ui/main2.dart';
 import 'package:http/http.dart' as http;
+import 'package:ui/user_model';
 
 class Screen2 extends StatefulWidget {
   @override
@@ -13,7 +14,6 @@ class Screen2 extends StatefulWidget {
 
 class Screen2State extends State<Screen2> {
   DateTime _dateTime;
-  final double _formDistance = 5.0;
   final _currencies = ['KES', 'AED', 'YEN'];
   String _currency = 'KES';
   TextEditingController expenseController = TextEditingController();
@@ -158,7 +158,7 @@ class Screen2State extends State<Screen2> {
 //new getdata function
 //get data from internet,. might take a whle so we use the async
 //use future so that we return something when the function is down
-  List data;
+  /*List data;
   Future<String> getData() async {
     http.Response response =
         await http.get("https://jsonplaceholder.typicode.com/posts",
@@ -170,26 +170,43 @@ class Screen2State extends State<Screen2> {
     //List data = json.decode(response.body);
     //print(data[1]["title"]);
     print(data);
-  }
+  }*/
 
-  //add item
+  //http post
+  /*Future<http.Response> createAlbum(String title) {
+  return http.post(
+    'https://jsonplaceholder.typicode.com/albums',
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(<String, String>{
+      'title': title,
+    }),
+  );
+}*/
+
+  
 
   @override
   Widget build(BuildContext context) {
-    TextStyle textstyle = Theme.of(context).textTheme.title;
-    appBar:
-    AppBar(
+   /* AppBar(
       backgroundColor: Color.fromRGBO(230, 230, 230, 10.0),
       title: Text("Record Expense", style: TextStyle(color: Colors.black)),
       actions: [
         IconButton(
             icon: Icon(
-              Icons.save_alt,
+              Icons.power_settings_new,
               color: Colors.blueGrey[900],
             ),
-            onPressed: () {})
+            onPressed: () {
+              Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => Home())
+                        );
+            })
       ],
-    );
+    );*/
+
     return SingleChildScrollView(
         child: Container(
             color: Color.fromRGBO(230, 230, 230, 10.0),
@@ -283,7 +300,7 @@ class Screen2State extends State<Screen2> {
                           textDirection: TextDirection.ltr,
                           style: TextStyle(
                               fontWeight: FontWeight.normal,
-                              fontSize: 16.0,
+                              fontSize: 18.0,
                               color: Colors.blueGrey),
                         ),
                         //date input field
@@ -318,8 +335,8 @@ class Screen2State extends State<Screen2> {
                           //border: Border.all( color: Colors.redAccent, width: 1),
                           //borderRadius: BorderRadius.circular(17),
                           child: Text(
-                            _dateTime == null ? ' ' : _dateTime.toString(),
-                            style: TextStyle(fontSize: 16),
+                            _dateTime == null ? 'Select Date' : _dateTime.toString(),
+                            style: TextStyle(fontSize: 16, color: Colors.blueGrey),
                           ),
                           onPressed: () {
                             showDatePicker(
@@ -340,7 +357,7 @@ class Screen2State extends State<Screen2> {
                           'Merchant',
                           style: TextStyle(
                               fontWeight: FontWeight.normal,
-                              fontSize: (16),
+                              fontSize: (18),
                               color: Colors.blueGrey),
                         ),
                         new Row(children: <Widget>[
@@ -373,7 +390,7 @@ class Screen2State extends State<Screen2> {
                           'Merchant Pin No',
                           style: TextStyle(
                               fontWeight: FontWeight.normal,
-                              fontSize: (16),
+                              fontSize: (18),
                               color: Colors.blueGrey),
                         ),
                         new Stack(
@@ -430,7 +447,7 @@ class Screen2State extends State<Screen2> {
                           'Payment Mode',
                           style: TextStyle(
                               fontWeight: FontWeight.normal,
-                              fontSize: (16),
+                              fontSize: (18),
                               color: Colors.blueGrey),
                         ),
                         new Row(
@@ -443,21 +460,21 @@ class Screen2State extends State<Screen2> {
                                 onChanged: radioButtonChanges,
                               ),
                               Text('Cash',
-                              style: TextStyle(color: Colors.blueGrey, fontSize: 16.0),),
+                              style: TextStyle(color: Colors.blueGrey, fontSize: 18.0),),
                               Radio(
                                 value: 'Card',
                                 groupValue: _radioValue,
                                 onChanged: radioButtonChanges,
                               ),
                               Text('Card',
-                              style: TextStyle(color: Colors.blueGrey, fontSize: 16.0),),
+                              style: TextStyle(color: Colors.blueGrey, fontSize: 18.0),),
                               Radio(
                                 value: 'Credit',
                                 groupValue: _radioValue,
                                 onChanged: radioButtonChanges,
                               ),
                               Text('Credit',
-                              style: TextStyle(color: Colors.blueGrey, fontSize: 16.0),
+                              style: TextStyle(color: Colors.blueGrey, fontSize: 18.0),
                               )
                               /*  Expanded(child: 
                               RadioListTile(
@@ -494,7 +511,7 @@ class Screen2State extends State<Screen2> {
                           'Account',
                           style: TextStyle(
                               fontWeight: FontWeight.normal,
-                              fontSize: (16),
+                              fontSize: (18),
                               color: Colors.blueGrey),
                         ),
                         new Row(children: <Widget>[
@@ -527,7 +544,7 @@ class Screen2State extends State<Screen2> {
                           'Currency',
                           style: TextStyle(
                               fontWeight: FontWeight.normal,
-                              fontSize: (16),
+                              fontSize: (18),
                               color: Colors.blueGrey),
                         ),
                         DropdownButton<String>(
@@ -583,7 +600,7 @@ class Screen2State extends State<Screen2> {
                           'EXPENSES',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: (17),
+                            fontSize: (18),
                             color: Colors.blueGrey,
                           ),
                         ),
@@ -593,10 +610,9 @@ class Screen2State extends State<Screen2> {
                           'Category',
                           style: TextStyle(
                               fontWeight: FontWeight.normal,
-                              fontSize: (16),
+                              fontSize: (18),
                               color: Colors.blueGrey),
                         ),
-                        SizedBox(height: 10),
                         //input field
                         new Row(children: <Widget>[
                           new Flexible(
@@ -630,7 +646,7 @@ class Screen2State extends State<Screen2> {
                           style: TextStyle(
                             fontWeight: FontWeight.normal,
                             color: Colors.blueGrey,
-                            fontSize: (16),
+                            fontSize: (18),
                           ),
                         ),
                         //textfield
@@ -666,7 +682,7 @@ class Screen2State extends State<Screen2> {
                           'Project',
                           style: TextStyle(
                               fontWeight: FontWeight.normal,
-                              fontSize: (16),
+                              fontSize: (18),
                               color: Colors.blueGrey),
                         ),
                         new Row(children: <Widget>[
@@ -701,7 +717,7 @@ class Screen2State extends State<Screen2> {
                           'Description',
                           style: TextStyle(
                               fontWeight: FontWeight.normal,
-                              fontSize: (16),
+                              fontSize: (18),
                               color: Colors.blueGrey),
                         ),
                         new Stack(
@@ -731,7 +747,7 @@ class Screen2State extends State<Screen2> {
                           'Amount',
                           style: TextStyle(
                               fontWeight: FontWeight.normal,
-                              fontSize: (16),
+                              fontSize: (18),
                               color: Colors.blueGrey),
                         ),
                         new Stack(
@@ -817,7 +833,7 @@ class Screen2State extends State<Screen2> {
                         Text('Prepared  By',
                             style: TextStyle(
                                 color: Colors.blueGrey,
-                                fontSize: 16.0,
+                                fontSize: 18.0,
                                 fontWeight: FontWeight.normal)),
                         //text field
                         new Stack(
@@ -845,7 +861,7 @@ class Screen2State extends State<Screen2> {
                         Text('Approved  By',
                             style: TextStyle(
                                 color: Colors.blueGrey,
-                                fontSize: 16.0,
+                                fontSize: 18.0,
                                 fontWeight: FontWeight.normal)),
                         //text field
                         new Stack(
@@ -873,7 +889,7 @@ class Screen2State extends State<Screen2> {
                         Text('Received  By',
                             style: TextStyle(
                                 color: Colors.blueGrey,
-                                fontSize: 16.0,
+                                fontSize: 18.0,
                                 fontWeight: FontWeight.normal)),
                         //text field
                         new Stack(

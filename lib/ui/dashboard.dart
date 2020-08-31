@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ui/ui/main2.dart';
+import 'package:ui/ui/main1.dart';
 
 class MyApp extends StatelessWidget{
   @override

@@ -1,7 +1,8 @@
 
 import 'package:flutter/material.dart';
-import 'package:ui/ui/signup.dart';
 import 'package:ui/ui/dashboard.dart';
+import 'package:ui/ui/main2.dart';
+import 'package:ui/ui/screen.dart';
 
 /*void main() {
   runApp(MyApp());
@@ -103,8 +104,9 @@ class UIAppState extends State<UIApp> {
     );
   }
 }*/
-
-
+import 'package:flutter/material.dart';
+import 'package:ui/ui/signup.dart';
+//import 'package:new_project/screens/signup.dart';
 
 void main() {
   runApp(MyApp());
@@ -323,6 +325,7 @@ class testtextfield extends StatefulWidget{
                   child: Column(
                     children: <Widget>[
                       TextField(
+                        keyboardType: TextInputType.emailAddress,
                         decoration: InputDecoration(
                           labelText: 'Email',
                           labelStyle: TextStyle(
@@ -337,6 +340,7 @@ class testtextfield extends StatefulWidget{
                         ),
                         SizedBox(height: 20),
                         TextField(
+                          keyboardType: TextInputType.visiblePassword,
                         decoration: InputDecoration(
                           labelText: 'Password',
                           labelStyle: TextStyle(
@@ -372,15 +376,15 @@ class testtextfield extends StatefulWidget{
                              child: GestureDetector(
                                onTap: () {
                                  Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => Screen1()),
-              );
+                          context,
+                          MaterialPageRoute(builder: (context) => ExpensePage())
+                        );
                                },
                                child: Center(
                                  child: Text(
                                    'Login', 
                                    style: TextStyle(
-                                     color: Colors.white, fontSize: 18.0, fontWeight: FontWeight.bold)
+                                     color: Colors.white, fontSize: 19.0, fontWeight: FontWeight.normal)
                                      ),
                                  )
                                ),
@@ -448,4 +452,3 @@ class testtextfield extends StatefulWidget{
   }
 
  }
-

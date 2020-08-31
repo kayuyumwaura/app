@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ui/ui/main2.dart';
 
 void main() {
   runApp(MyApp());
@@ -70,7 +71,7 @@ class SignUpPage extends StatefulWidget {
                             color: Colors.blueGrey,
                             fontFamily: 'Roboto',
                             fontSize: 20.0,
-                            fontWeight: FontWeight.bold
+                            fontWeight: FontWeight.normal
                             ),
                             focusedBorder: UnderlineInputBorder(
                               borderSide: BorderSide(color: Colors.redAccent))
@@ -92,16 +93,6 @@ class SignUpPage extends StatefulWidget {
                           ),
                           obscureText: true,
                         ),
-                        SizedBox(height: 5.0),
-                        Container(
-                          alignment: Alignment.bottomRight,
-                          padding: EdgeInsets.only(top: 15.0, left: 20.0 ),
-                          child: InkWell(
-                            child: Text('Forgot Password',
-                            style: TextStyle(color: Colors.redAccent, fontSize: 17.0),
-                            ),
-                            )
-                        ),
                         SizedBox(height: 40),
                         Container(
                           height: 50.0,
@@ -111,7 +102,12 @@ class SignUpPage extends StatefulWidget {
                              color: Colors.redAccent,
                              elevation: 7.0,
                              child: GestureDetector(
-                               onTap: () {},
+                               onTap: () {
+                                 Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => ExpensePage())
+                        );
+                               },
                                child: Center(
                                  child: Text(
                                    'Sign Up', 
