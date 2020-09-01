@@ -58,8 +58,8 @@ TextEditingController merchantController = TextEditingController();
     children: <Widget>[
       UserAccountsDrawerHeader(
         
-         accountName: Text("Kayuyu Mwaura", style: TextStyle( color:Colors.blueGrey)),
-         accountEmail: Text("mwaurakayuyu@gmail.com", style: TextStyle( color:Colors.blueGrey)),
+         accountName: Text("Kayuyu Mwaura", style: TextStyle( color:Colors.white)),
+         accountEmail: Text("mwaurakayuyu@gmail.com", style: TextStyle( color:Colors.white)),
          currentAccountPicture: CircleAvatar(
          backgroundColor: Colors.white,
          

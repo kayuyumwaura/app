@@ -28,20 +28,6 @@ class UIAppState extends State<UIApp> {
       ),
  body: Screen1(),     
       drawer: Drawer(
-      /*  UserAccountsDrawerHeader(
-         accountName: Text("Kayuyu Mwaura"),
-         accountEmail: Text("mwaurakayuyu@gmail.com"),
-         currentAccountPicture: CircleAvatar(
-         backgroundColor:
-        Theme.of(context).platform == TargetPlatform.iOS
-            ? Colors.blue
-            : Colors.white,
-    child: Text(
-      "KM",
-      style: TextStyle(fontSize: 18.0),
-    ),
-  ),
-),*/
           child: ListView(
     children: <Widget>[
       ListTile(

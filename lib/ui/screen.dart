@@ -6,6 +6,7 @@ import 'package:ui/main.dart';
 import 'package:ui/ui/main2.dart';
 import 'package:http/http.dart' as http;
 import 'package:ui/user_model';
+import 'package:ui/ui/addnew.dart';
 
 class Screen2 extends StatefulWidget {
   @override
@@ -1063,6 +1064,10 @@ class CategoryList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Color.fromRGBO(232, 232, 232, 10.0),
+        title: Text('Categories', style: TextStyle(color: Colors.black)),
+      ),
         body: ListView.builder(
       itemCount: 20,
       itemBuilder: (BuildContext context, int index) {
@@ -1074,7 +1079,41 @@ class CategoryList extends StatelessWidget {
           },
         );
       },
-    ));
+    ),
+    /*floatingActionButton: CircleAvatar(
+        backgroundColor: Colors.redAccent,
+        child: IconButton(
+            icon: Icon(Icons.add),
+            color: Colors.white,
+            iconSize: 25,
+            onPressed: () {
+              Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ExpensePage()),
+              );
+            },
+          ),
+      ),*/
+      floatingActionButton: Container(
+        height: 50.0,
+        width: 50.0,
+        child: CircleAvatar(
+          backgroundColor: Colors.redAccent,
+            child: IconButton(
+              icon: Icon(Icons.add),
+              color: Colors.white,
+              iconSize: 30, 
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Categories()),
+                  );
+              }
+              ),
+        ),
+        
+        ),
+    );
   }
 }
 
