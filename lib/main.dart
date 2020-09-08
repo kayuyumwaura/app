@@ -277,11 +277,15 @@ class testtextfield extends StatefulWidget{
 
 
  class HomeState extends State<Home> {
+   String _email, _password;
+   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
       resizeToAvoidBottomPadding: false,
-      body: Column(
+      body: Form(
+        key: _formkey,
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
         Container(
@@ -324,7 +328,13 @@ class testtextfield extends StatefulWidget{
                 padding: EdgeInsets.only(top: 35.0, left: 20.0, right: 20.0),
                   child: Column(
                     children: <Widget>[
-                      TextField(
+                      TextFormField(
+                          validator: (input) {
+                            if(input.isEmpty) {
+                              return 'Please enter your email';
+                            }
+                          },   
+                          onSaved: (input) => _email = input,  
                         keyboardType: TextInputType.emailAddress,
                         decoration: InputDecoration(
                           labelText: 'Email',
@@ -339,7 +349,13 @@ class testtextfield extends StatefulWidget{
                           ),
                         ),
                         SizedBox(height: 20),
-                        TextField(
+                        TextFormField(
+                          validator: (input) {
+                            if(input.length < 6) {
+                              return 'Please enter your password';
+                            }
+                          },   
+                          onSaved: (input) => _email = input,                       
                           keyboardType: TextInputType.visiblePassword,
                         decoration: InputDecoration(
                           labelText: 'Password',
@@ -447,8 +463,16 @@ class testtextfield extends StatefulWidget{
                       )
                 ],
                 )
-      ],)
+      ],))
     );
+  }
+
+  void signIn(){
+    //validate
+    final _form = _formkey.currentState;
+    if(formState.validate()){
+
+    }
   }
 
  }

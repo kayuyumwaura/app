@@ -186,11 +186,9 @@ class Screen2State extends State<Screen2> {
   );
 }*/
 
-  
-
   @override
   Widget build(BuildContext context) {
-   /* AppBar(
+    /* AppBar(
       backgroundColor: Color.fromRGBO(230, 230, 230, 10.0),
       title: Text("Record Expense", style: TextStyle(color: Colors.black)),
       actions: [
@@ -309,35 +307,16 @@ class Screen2State extends State<Screen2> {
                             alignment: Alignment.centerRight,
                             children: <Widget>[
                               new Flexible(
-                                child: new TextField(
-                                  controller: dateController,
-                                  decoration: InputDecoration(
-                                    
-                                    prefixIcon: Icon(
-                                      Icons.date_range,
-                                      color: Colors.blueGrey,
-                                      
-                                    ),
-                                    hintText: ('Select Date'),
-                                  ),
-                                ),
-                              ),
-                              IconButton(
-                                onPressed: clearTextInput0,
-                                icon: Icon(
-                                  Icons.clear,
-                                  color: Colors.blueGrey[900],
-                                  size: 16.0,
-                                ),
-                              )
-                            ]),
-                        RaisedButton(
+                                child: RaisedButton(
                           color: Colors.white,
                           //border: Border.all( color: Colors.redAccent, width: 1),
                           //borderRadius: BorderRadius.circular(17),
                           child: Text(
-                            _dateTime == null ? 'Select Date' : _dateTime.toString(),
-                            style: TextStyle(fontSize: 16, color: Colors.blueGrey),
+                            _dateTime == null
+                                ? 'Select Date'
+                                : _dateTime.toString(),
+                            style:
+                                TextStyle(fontSize: 16, color: Colors.blueGrey),
                           ),
                           onPressed: () {
                             showDatePicker(
@@ -352,7 +331,28 @@ class Screen2State extends State<Screen2> {
                             });
                           },
                         ),
-
+                                /*child: new TextField(
+                                  controller: dateController,
+                                  decoration: InputDecoration(
+                                    prefixIcon: Icon(
+                                      Icons.date_range,
+                                      color: Colors.blueGrey,
+                                    ),
+                                    hintText: ('Select Date'),
+                                  ),
+                                ),*/
+                              ),
+                              /*IconButton(
+                                alignment: Alignment.centerRight,
+                                onPressed: clearTextInput0,
+                                icon: Icon(
+                                  Icons.clear,
+                                  color: Colors.blueGrey[900],
+                                  size: 16.0,
+                                ),
+                              )*/
+                            ]),
+                            Divider(color: Colors.blueGrey),
                         SizedBox(height: 20),
                         Text(
                           'Merchant',
@@ -460,22 +460,30 @@ class Screen2State extends State<Screen2> {
                                 groupValue: _radioValue,
                                 onChanged: radioButtonChanges,
                               ),
-                              Text('Cash',
-                              style: TextStyle(color: Colors.blueGrey, fontSize: 18.0),),
+                              Text(
+                                'Cash',
+                                style: TextStyle(
+                                    color: Colors.blueGrey, fontSize: 18.0),
+                              ),
                               Radio(
                                 value: 'Card',
                                 groupValue: _radioValue,
                                 onChanged: radioButtonChanges,
                               ),
-                              Text('Card',
-                              style: TextStyle(color: Colors.blueGrey, fontSize: 18.0),),
+                              Text(
+                                'Card',
+                                style: TextStyle(
+                                    color: Colors.blueGrey, fontSize: 18.0),
+                              ),
                               Radio(
                                 value: 'Credit',
                                 groupValue: _radioValue,
                                 onChanged: radioButtonChanges,
                               ),
-                              Text('Credit',
-                              style: TextStyle(color: Colors.blueGrey, fontSize: 18.0),
+                              Text(
+                                'Credit',
+                                style: TextStyle(
+                                    color: Colors.blueGrey, fontSize: 18.0),
                               )
                               /*  Expanded(child: 
                               RadioListTile(
@@ -1027,7 +1035,7 @@ class MerchantList extends StatelessWidget {
           title: Text("merchant_${index + 1}"),
           onTap: () {
             print("merchant_${index + 1}");
-            Navigator.of(context).pop("merchabt_${index + 1}");
+            Navigator.of(context).pop("merchant_${index + 1}");
           },
         );
       },
@@ -1058,9 +1066,45 @@ class AccountList extends StatelessWidget {
 }
 
 //categorieslist
-class CategoryList extends StatelessWidget {
-  CategoryList({this.onSelect});
-  final Function(String) onSelect;
+class Category extends StatelessWidget {
+  //CategoryList({this.onSelect});
+  //final Function(String) onSelect;
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(home: CategoryList());
+  }
+}
+
+class CategoryList extends StatefulWidget {
+  @override
+  State createState() => _State();
+}
+
+class _State extends State<CategoryList> {
+  var categorynameController = TextEditingController();
+  clearTextInput0() {
+    categorynameController.clear();
+  }
+
+  final List<String> names = <String>[
+    'Food',
+    'Toiletries',
+    'Party',
+    'Rent',
+    'Transport'
+  ];
+
+ /* void addItemToList() {
+    setState(() {
+      names.insert(0, categorynameController.text);
+    });
+  }*/
+  _onSubmit(){
+    setState(() {
+      names.add(categorynameController.text);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -1068,7 +1112,69 @@ class CategoryList extends StatelessWidget {
         backgroundColor: Color.fromRGBO(232, 232, 232, 10.0),
         title: Text('Categories', style: TextStyle(color: Colors.black)),
       ),
-        body: ListView.builder(
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          Text('Category Name',
+              style: TextStyle(
+                  color: Colors.blueGrey,
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.normal)),
+          TextField(
+            controller: categorynameController,
+            decoration: InputDecoration(hintText: 'Enter Category'),
+          ),
+          SizedBox(height: 20.0),
+          RaisedButton(
+            child: Text(
+              "Save",
+              style: TextStyle(color: Colors.white, fontSize: 16),
+            ),
+            hoverColor: Colors.white,
+            color: Colors.redAccent,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(17.0),
+                side: BorderSide(color: Colors.red)),
+            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+            // splashColor: Colors.grey,
+            // onPressed: getData
+            onPressed: _onSubmit,
+              //addItemToList();
+              
+          ),
+          Expanded(
+              child: ListView.builder(
+                  padding: const EdgeInsets.all(29),
+                  itemCount: names.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Container(
+                        height: 80.0, child: Text('${names[index]} '));
+                  }))
+        ],
+      ),
+      floatingActionButton: Container(
+        height: 50.0,
+        width: 50.0,
+        child: CircleAvatar(
+          backgroundColor: Colors.redAccent,
+          child: IconButton(
+              icon: Icon(Icons.add),
+              color: Colors.white,
+              iconSize: 30,
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Categories()),
+                );
+              }),
+        ),
+      ),
+    );
+  }
+}
+
+  
+/* body: ListView.builder(
       itemCount: 20,
       itemBuilder: (BuildContext context, int index) {
         return ListTile(
@@ -1078,9 +1184,9 @@ class CategoryList extends StatelessWidget {
             Navigator.of(context).pop("category_${index + 1}");
           },
         );
-      },
-    ),
-    /*floatingActionButton: CircleAvatar(
+      }, 
+    ),*/
+/*floatingActionButton: CircleAvatar(
         backgroundColor: Colors.redAccent,
         child: IconButton(
             icon: Icon(Icons.add),
@@ -1094,7 +1200,7 @@ class CategoryList extends StatelessWidget {
             },
           ),
       ),*/
-      floatingActionButton: Container(
+/*  floatingActionButton: Container(
         height: 50.0,
         width: 50.0,
         child: CircleAvatar(
@@ -1115,7 +1221,7 @@ class CategoryList extends StatelessWidget {
         ),
     );
   }
-}
+}*/
 
 //Customer list
 class CustomerList extends StatelessWidget {
@@ -1141,8 +1247,8 @@ class CustomerList extends StatelessWidget {
 
 //project list
 class ProjectList extends StatelessWidget {
-  ProjectList({this.onSelect});
-  final Function(String) onSelect;
+  //ProjectList({this.onSelect});
+  //final Function(String) onSelect;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
