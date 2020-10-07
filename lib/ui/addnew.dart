@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:ui/ui/screen.dart';
+import 'package:ui/ui/file_operations/file_utils.dart';
+import 'dart:io';
 
 class MyApp extends StatelessWidget {
   @override
@@ -18,20 +19,6 @@ class Categories extends StatefulWidget {
 }
 
 class _CategoriesState extends State<Categories> {
-
-//clear icon in merchant
-  var categorynameController = TextEditingController();
-  clearTextInput0() {
-    categorynameController.clear();
-  }
-
-  //clear icon in merchant
-  var descriptionController = TextEditingController();
-  clearTextInput1() {
-    descriptionController.clear();
-  }
-
-
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -41,15 +28,38 @@ class _CategoriesState extends State<Categories> {
               style: TextStyle(
                   color: Colors.blueGrey, fontWeight: FontWeight.bold)),
         ),
-        body: new Column(
-          children: <Widget>[
-            Container(
-              padding: EdgeInsets.all(30), //row 2 container properties
+        body: AddNew()
+    );
+  }
+}
+
+class AddNew extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => AddNewState();
+   }
+
+class AddNewState extends State<AddNew> {
+  
+  String fileContents = "No Data";
+//clear icon in merchant
+  final categorynameController = TextEditingController();
+  
+
+  //clear icon in merchant
+  var descriptionController = TextEditingController();
+  clearTextInput1() {
+    descriptionController.clear();
+  }
+  @override
+  Widget build(BuildContext context) {
+    return  SingleChildScrollView(
+      child: Container(
+        padding: EdgeInsets.all(30), //row container properties
               height: 700,
               width: double.infinity,
               color: Colors.white,
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text('Category Name',
                         style: TextStyle(
@@ -67,7 +77,7 @@ class _CategoriesState extends State<Categories> {
                                   InputDecoration(hintText: ('Enter Category Name')),
                             ),
                           ),
-                          IconButton(
+                          /*IconButton(
                             //onPressed: () => _controller.clear(),
                             onPressed: clearTextInput0,
                             icon: Icon(
@@ -75,7 +85,7 @@ class _CategoriesState extends State<Categories> {
                               color: Colors.blueGrey,
                               size: 16.0,
                             ),
-                          )
+                          )*/
                         ]),
 
                     SizedBox(height: 20),
@@ -130,6 +140,7 @@ class _CategoriesState extends State<Categories> {
                                 // splashColor: Colors.grey,
                                 // onPressed: getData
                                 onPressed: () {
+                                  FileUtils.saveToFile(categorynameController.text);
                                   //addItemToList();
                                 },                                  
                               /*  onPressed: () async{
@@ -162,10 +173,48 @@ class _CategoriesState extends State<Categories> {
                                   );*/
                                 },*/
                               ),
-                            ]))
-                  ]),
-            )
-          ],
-        ));
+                            ])),
+
+                            Container(
+                        padding: EdgeInsets.all(30), //row container properties
+                        // height: 120,
+                        width: double.infinity,
+                        color: Colors.white,
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              RaisedButton(
+                                child: Text(
+                                  "Read",
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 16),
+                                ),
+                                hoverColor: Colors.white,
+                                color: Colors.redAccent,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(17.0),
+                                    side: BorderSide(color: Colors.red)),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 5),
+                                // splashColor: Colors.grey,
+                                // onPressed: getData
+                                onPressed: () {
+                                  FileUtils.readFromFile().then((contents) {  //then meaning it wont be replaced immediately
+                                    setState(() {                              //so on click,, it sets the state
+                                      fileContents = contents;
+                                    });
+                                  }
+                                  );
+                                  //addItemToList();
+                                },  
+                              ),
+                            ])),
+                            Text(fileContents),
+
+                  ]
+        ),
+     ) );
   }
+
 }
+       

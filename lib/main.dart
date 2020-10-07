@@ -1,8 +1,10 @@
-
 import 'package:flutter/material.dart';
-import 'package:ui/ui/dashboard.dart';
+//import 'package:ui/ui/dashboard.dart';
 import 'package:ui/ui/main2.dart';
-import 'package:ui/ui/screen.dart';
+//import 'package:ui/ui/screen.dart';
+//import 'package:firebase/firebase.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:ui/ui/signup.dart';
 
 /*void main() {
   runApp(MyApp());
@@ -104,11 +106,11 @@ class UIAppState extends State<UIApp> {
     );
   }
 }*/
-import 'package:flutter/material.dart';
-import 'package:ui/ui/signup.dart';
+//import 'package:flutter/material.dart';
+
 //import 'package:new_project/screens/signup.dart';
 
-void main() {
+/* void main() {
   runApp(MyApp());
 }
 
@@ -131,7 +133,7 @@ class MyApp extends StatelessWidget {
 class Home extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => HomeState();
-}
+} */
 
 /*class HomeState extends State<Home> {
   TextEditingController textfieldController = TextEditingController();
@@ -273,206 +275,310 @@ class testtextfield extends StatefulWidget{
                  ));
                }}*/
 
+void main() {
+  runApp(MyApp());
+}
 
-
-
- class HomeState extends State<Home> {
-   String _email, _password;
-   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      resizeToAvoidBottomPadding: false,
-      body: Form(
-        key: _formkey,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-        Container(
-          child: Stack(
-            children: <Widget>[
-            Container(
-              padding: EdgeInsets.fromLTRB(20.0, 150.0, 0.0, 0.0),
-              child: Text(
-                'Hello',
-                style: TextStyle(
-                  fontSize: 80.0,
-                  fontWeight: FontWeight.bold, color: Colors.blueGrey
-                  ),
-                )
-              ),
-              Container(
-              padding: EdgeInsets.fromLTRB(20.0, 220.0, 0.0, 0.0),
-              child: Text(
-                'There',
-                style: TextStyle(
-                  fontSize: 80.0,
-                  fontWeight: FontWeight.bold, color: Colors.blueGrey
-                  ),
-                )
-              ),
-              Container(
-              padding: EdgeInsets.fromLTRB(190.0, 220.0, 0.0, 0.0),
-              child: Text(
-                '.',
-                style: TextStyle(
-                  fontSize: 80.0,
-                  fontWeight: FontWeight.bold, color: Colors.redAccent
-                  ),
-                )
-              )
-          ],)
-        ),
-        SizedBox(height: 30),
-        Container(
-                padding: EdgeInsets.only(top: 35.0, left: 20.0, right: 20.0),
-                  child: Column(
-                    children: <Widget>[
-                      TextFormField(
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Dashboard',
+      home: Login(),
+    );
+  }
+}
+
+class Login extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => LoginState();
+}
+
+class LoginState extends State<Login> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(body: Home());
+  }
+}
+
+class Home extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => HomeState();
+}
+
+class HomeState extends State<Home> {
+  String _email, _password;
+  final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        body: Form(
+            key: _formkey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Container(
+                    child: Stack(
+                  children: <Widget>[
+                    //hello
+                    Container(
+                      //width: MediaQuery.of(context).size.width * 1.0,
+                      //height: MediaQuery.of(context).size.height * 0.3,
+                        padding: EdgeInsets.fromLTRB(20.0, 150.0, 0.0, 0.0),
+                        child: Text(
+                          'Hello',
+                          style: TextStyle(
+                              fontSize: 80.0,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.blueGrey),
+                        )),
+                        //there
+                    Container(
+                      //width: MediaQuery.of(context).size.width * 1.0,
+                      //height: MediaQuery.of(context).size.height * 0.4 ,
+                        padding: EdgeInsets.fromLTRB(20.0, 210.0, 0.0, 0.0),
+                        child: Text(
+                          'There',
+                          style: TextStyle(
+                              fontSize: 80.0,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.blueGrey),
+                        )),
+                        
+                    Container(
+                     // height: MediaQuery.of(context).size.height * 0.4,
+                        padding: EdgeInsets.fromLTRB(190.0, 220.0, 0.0, 0.0),
+                        child: Text(
+                          '.',
+                          style: TextStyle(
+                              fontSize: 80.0,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.redAccent),
+                        ))
+                  ],
+                )),
+                SizedBox(height: 5.0),
+                Container(
+                     // width: MediaQuery.of(context).size.width * 1.0,
+                     // height: MediaQuery.of(context).size.height * 0.4,
+                    padding:
+                        EdgeInsets.only(top: 30.0, left: 20.0, right: 20.0),
+                    child: Column(
+                      children: <Widget>[
+                        TextFormField(
                           validator: (input) {
-                            if(input.isEmpty) {
+                            if (input.isEmpty) {
                               return 'Please enter your email';
                             }
-                          },   
-                          onSaved: (input) => _email = input,  
-                        keyboardType: TextInputType.emailAddress,
-                        decoration: InputDecoration(
-                          labelText: 'Email',
-                          labelStyle: TextStyle(
-                            color: Colors.blueGrey,
-                            fontFamily: 'Roboto',
-                            fontSize: 20.0,
-                            fontWeight: FontWeight.normal
-                            ),
-                            focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.redAccent))
-                          ),
+                          },
+                          onSaved: (input) => _email = input,
+                          keyboardType: TextInputType.emailAddress,
+                          decoration: InputDecoration(
+                              labelText: 'Email',
+                              labelStyle: TextStyle(
+                                  color: Colors.blueGrey,
+                                  fontFamily: 'Roboto',
+                                  fontSize: 20.0,
+                                  fontWeight: FontWeight.normal),
+                              focusedBorder: UnderlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: Colors.redAccent))),
                         ),
                         SizedBox(height: 20),
                         TextFormField(
                           validator: (input) {
-                            if(input.length < 6) {
-                              return 'Please enter your password';
+                            if (input.length < 6) {
+                              return 'Please enter a longer password';
                             }
-                          },   
-                          onSaved: (input) => _email = input,                       
+                          },
+                          onSaved: (input) => _password = input,
                           keyboardType: TextInputType.visiblePassword,
-                        decoration: InputDecoration(
-                          labelText: 'Password',
-                          labelStyle: TextStyle(
-                            color: Colors.blueGrey,
-                            fontFamily: 'Roboto',
-                            fontSize: 20.0,
-                            fontWeight: FontWeight.normal
-                            ),
-                            focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.redAccent)
-                              )
-                          ),
+                          decoration: InputDecoration(
+                              labelText: 'Password',
+                              labelStyle: TextStyle(
+                                  color: Colors.blueGrey,
+                                  fontFamily: 'Roboto',
+                                  fontSize: 20.0,
+                                  fontWeight: FontWeight.normal),
+                              focusedBorder: UnderlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: Colors.redAccent))),
                           obscureText: true,
                         ),
                         SizedBox(height: 5.0),
                         Container(
-                          alignment: Alignment.bottomRight,
-                          padding: EdgeInsets.only(top: 15.0, left: 20.0 ),
-                          child: InkWell(
-                            child: Text('Forgot Password',
-                            style: TextStyle(color: Colors.redAccent, fontSize: 17.0),
-                            ),
-                            )
-                        ),
-                        SizedBox(height: 60),
+                      //width: MediaQuery.of(context).size.width * 1.0,
+                      //height: MediaQuery.of(context).size.height * 0.4,
+                            alignment: Alignment.bottomRight,
+                            padding: EdgeInsets.only(top: 15.0, left: 20.0),
+                            child: InkWell(
+                              child: Text(
+                                'Forgot Password',
+                                style: TextStyle(
+                                    color: Colors.redAccent, fontSize: 17.0),
+                              ),
+                            )),
+                        SizedBox(height: 50),
                         Container(
-                          height: 45.0,
-                           child: Material(
-                             borderRadius: BorderRadius.circular(30.0),
-                             shadowColor: Colors.redAccent,
-                             color: Colors.redAccent,
-                             elevation: 7.0,
-                             child: GestureDetector(
-                               onTap: () {
-                                 Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => ExpensePage())
-                        );
-                               },
-                               child: Center(
-                                 child: Text(
-                                   'Login', 
-                                   style: TextStyle(
-                                     color: Colors.white, fontSize: 19.0, fontWeight: FontWeight.normal)
-                                     ),
-                                 )
-                               ),
-                             )
-                        ),
+                     // width: MediaQuery.of(context).size.width * 1.0,
+                     // height: MediaQuery.of(context).size.height * 0.4,
+                            height: 40.0,
+                            child: Material(
+                              borderRadius: BorderRadius.circular(30.0),
+                              shadowColor: Colors.redAccent,
+                              color: Colors.redAccent,
+                              elevation: 7.0,
+                              child: GestureDetector(
+                                  onTap: signIn,
+                                  /*() {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                ExpensePage()));
+                                  },*/
+                                  child: Center(
+                                    child: Text('Login',
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 19.0,
+                                            fontWeight: FontWeight.normal)),
+                                  )),
+                            )),
                         SizedBox(height: 20),
                         Container(
-                          height: 40.0,
-                          color: Colors.transparent,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: Colors.blueGrey,
-                                style: BorderStyle.solid,
-                                width: 1.0
-                              ),
-                              color: Colors.transparent,
-                              borderRadius: BorderRadius.circular(30)
-                              ),
+                      //width: MediaQuery.of(context).size.width * 1.0,
+                      //height: MediaQuery.of(context).size.height * 0.4,
+                            height: 40.0,
+                            color: Colors.transparent,
+                            child: Container(
+                      //width: MediaQuery.of(context).size.width * 1.0,
+                      //height: MediaQuery.of(context).size.height * 0.4,
+                              decoration: BoxDecoration(
+                                  border: Border.all(
+                                      color: Colors.blueGrey,
+                                      style: BorderStyle.solid,
+                                      width: 1.0),
+                                  color: Colors.transparent,
+                                  borderRadius: BorderRadius.circular(30)),
                               child: InkWell(
-                                onTap: (){},
+                                onTap: () {},
                                 child: Center(
-                                  child: Text('Login with Outlook', 
+                                    child: Text(
+                                  'Login with Outlook',
                                   style: TextStyle(
-                                    color: Colors.blueGrey,
-                                    fontSize: 18.0
-                                    ),
-                                  )
-                                  ),
-                                ),
-                            )
-                        )
-                    ],)
-              ),
-              SizedBox(height: 120),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text ('New to Expenses?',
-                    style: TextStyle(
-                      fontSize: 18.0, color: Colors.blueGrey
-                      ),
+                                      color: Colors.blueGrey, fontSize: 18.0),
+                                )),
+                              ),
+                            ))
+                      ],
+                    )),
+                SizedBox(height: 120),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      'New to TG Expenses?',
+                      style: TextStyle(fontSize: 18.0, color: Colors.blueGrey),
                     ),
-                    SizedBox(width: 5.0,),
+                    SizedBox(
+                      width: 5.0,
+                    ),
                     InkWell(
-                      onTap: (){
+                      onTap: () {
                         Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => SignUpPage())
-                        );
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SignUpPage()));
                       },
-                      child: Text('Register',
-                      style: TextStyle(
-                        color: Colors.redAccent, 
-                        fontSize: 18.0,
-                        decoration: TextDecoration.underline
-                        ),
+                      child: Text(
+                        'Register',
+                        style: TextStyle(
+                            color: Colors.redAccent,
+                            fontSize: 18.0,
+                            decoration: TextDecoration.underline),
                       ),
-                      
-                      )
-                ],
+                    )
+                  ],
                 )
-      ],))
-    );
+              ],
+            )));
   }
 
-  void signIn(){
+  void signIn() async {
     //validate
-    final _form = _formkey.currentState;
-    if(formState.validate()){
+    //final formState = _formkey.currentState;
+    if (_formkey.currentState.validate()) {
+      _formkey.currentState.save();
+      try {
+        UserCredential user = await FirebaseAuth.instance
+            .signInWithEmailAndPassword(email: _email, password: _password);
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => ExpensePage()));
+      } catch (e) {
+        //print(e.message);
+        return showDialog(
+          context: context,
+          builder: (context) {
+            Future.delayed(Duration(seconds: 10), () {
+              Navigator.of(context).pop(true);
+            });
+          AlertDialog alert = AlertDialog(
+            content: Container(
 
+            ),
+          );
+          });
+
+        return showDialog(
+          context: context,
+          builder: (context) {
+            Future.delayed(Duration(seconds: 10), () {
+              Navigator.of(context).pop(true);
+            });
+            return AlertDialog(
+                content: Container(
+              decoration: BoxDecoration(
+                shape: BoxShape.rectangle,
+                color: Colors.white,
+                borderRadius: BorderRadius.all(Radius.circular(32.0))
+                ),
+              child: Column(
+                children: <Widget>[
+                Text('Please enter valid credentials.'),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      'New to TG Expenses?',
+                      style: TextStyle(fontSize: 18.0, color: Colors.blueGrey),
+                    ),
+                    SizedBox(
+                      width: 5.0,
+                    ),
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SignUpPage()));
+                      },
+                      child: Text(
+                        'Register',
+                        style: TextStyle(
+                            color: Colors.redAccent,
+                            fontSize: 18.0,
+                            decoration: TextDecoration.underline),
+                      ),
+                    )
+                  ],
+                )
+              ]),
+            ));
+          },
+        );
+      }
     }
   }
-
- }
+}

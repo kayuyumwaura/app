@@ -1025,9 +1025,16 @@ void _onDropdownChanged(String value) {}
 class MerchantList extends StatelessWidget {
   MerchantList({this.onSelect});
   final Function(String) onSelect;
+  String fileContents = "";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Color.fromRGBO(230, 230, 230, 10.0),
+          title: Text("Add Merchant",
+              style: TextStyle(
+                  color: Colors.blueGrey, fontWeight: FontWeight.bold)),
+      ),
         body: ListView.builder(
       itemCount: 20,
       itemBuilder: (BuildContext context, int index) {
@@ -1039,7 +1046,25 @@ class MerchantList extends StatelessWidget {
           },
         );
       },
-    ));
+    ),
+    floatingActionButton: Container(
+        height: 50.0,
+        width: 50.0,
+        child: CircleAvatar(
+          backgroundColor: Colors.redAccent,
+          child: IconButton(
+              icon: Icon(Icons.add),
+              color: Colors.white,
+              iconSize: 30,
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Categories()),
+                );
+              }),
+        ),
+      ),
+    );
   }
 }
 
@@ -1050,6 +1075,12 @@ class AccountList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Color.fromRGBO(230, 230, 230, 10.0),
+          title: Text("Add Account",
+              style: TextStyle(
+                  color: Colors.blueGrey, fontWeight: FontWeight.bold)),
+      ),
         body: ListView.builder(
       itemCount: 20,
       itemBuilder: (BuildContext context, int index) {
@@ -1061,7 +1092,25 @@ class AccountList extends StatelessWidget {
           },
         );
       },
-    ));
+    ),
+    floatingActionButton: Container(
+        height: 50.0,
+        width: 50.0,
+        child: CircleAvatar(
+          backgroundColor: Colors.redAccent,
+          child: IconButton(
+              icon: Icon(Icons.add),
+              color: Colors.white,
+              iconSize: 30,
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Categories()),
+                );
+              }),
+        ),
+      ),
+    );
   }
 }
 
@@ -1230,6 +1279,12 @@ class CustomerList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Color.fromRGBO(230, 230, 230, 10.0),
+          title: Text("Add Customer",
+              style: TextStyle(
+                  color: Colors.blueGrey, fontWeight: FontWeight.bold)),
+      ),
         body: ListView.builder(
       itemCount: 20,
       itemBuilder: (BuildContext context, int index) {
@@ -1241,7 +1296,25 @@ class CustomerList extends StatelessWidget {
           },
         );
       },
-    ));
+    ),
+    floatingActionButton: Container(
+        height: 50.0,
+        width: 50.0,
+        child: CircleAvatar(
+          backgroundColor: Colors.redAccent,
+          child: IconButton(
+              icon: Icon(Icons.add),
+              color: Colors.white,
+              iconSize: 30,
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Categories()),
+                );
+              }),
+        ),
+      ),
+    );
   }
 }
 
@@ -1252,6 +1325,12 @@ class ProjectList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Color.fromRGBO(230, 230, 230, 10.0),
+          title: Text("Add Project",
+              style: TextStyle(
+                  color: Colors.blueGrey, fontWeight: FontWeight.bold)),
+      ),
         body: ListView.builder(
       itemCount: 20,
       itemBuilder: (BuildContext context, int index) {
@@ -1263,6 +1342,24 @@ class ProjectList extends StatelessWidget {
           },
         );
       },
-    ));
+    ),
+    floatingActionButton: Container(
+        height: 50.0,
+        width: 50.0,
+        child: CircleAvatar(
+          backgroundColor: Colors.redAccent,
+          child: IconButton(
+              icon: Icon(Icons.add),
+              color: Colors.white,
+              iconSize: 30,
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Categories()),
+                );
+              }),
+        ),
+      ),
+    );
   }
 }
