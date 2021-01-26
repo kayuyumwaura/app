@@ -150,11 +150,11 @@ class UIAppState extends State<UIApp> {
           child: ListView(
     children: <Widget>[
       ListTile(
-        title: Text("Item 1"),
+        title: Text("Profile"),
         trailing: Icon(Icons.arrow_forward),
       ),
       ListTile(
-        title: Text("Item 2"),
+        title: Text("History"),
         trailing: Icon(Icons.arrow_forward),
       ),
        ListTile(
@@ -162,7 +162,7 @@ class UIAppState extends State<UIApp> {
         trailing: Icon(Icons.arrow_forward),
       ),
       ListTile(
-        title: Text("Item 4"),
+        title: Text("Settings"),
         trailing: Icon(Icons.arrow_forward),
       ),
     ],
