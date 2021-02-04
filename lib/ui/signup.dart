@@ -139,12 +139,12 @@ class SignUpPageState extends State<SignUpPage> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) => ExpensePage()));
-                                } on FirebaseAuthException catch (e) {
+                                } on FirebaseAuthException catch (e) {   
                                   if (e.code == 'weak-password') {
                                     print('The password is too weak');
                                   } else if (e.code == 'email-already-in-use') {
                                     print(
-                                        'The account already exists for that email');
+                                        'An account already exists for that email');
                                   }
                                 } catch (e) {
                                   print(e.toString());
